@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: sport-matcher
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydatabase
+    username: myuser
+    password: secret
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  jpa.show-sql: true
