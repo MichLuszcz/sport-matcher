@@ -4,35 +4,60 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 
-@Setter
-@Getter
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
+@Table(name = "users")
+@Getter
+@Setter
+@ToString(exclude = {"password", "ads", "sentMessages", "receivedMessages"})
 public class User {
+
   @Id
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String name;
+  @Column(length = 15, nullable = false, unique = true)
+  private String username;
+
+  @Column(nullable = false, unique = true)
+  private String email;
+
   @JsonIgnore
+  @Column(nullable = false)
   private String password;
 
-  private String email;
-  @Column(unique = true)
-  private String username;
+  @Column(nullable = false)
+  private String name;
+
+  @Column(nullable = false, updatable = false)
+  @CreatedDate
+  private LocalDateTime dateCreated;
+
+  @Column
+  private Boolean isActive = true;
+
   private String role;
-  private Boolean enabled; // in case we do account verification later
+
+  private Boolean enabled;
 
 
-  @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", enabled=" + enabled +
-                '}';
-    }
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<Ad> ads;
+
+  @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+  private List<Message> sentMessages;
+
+  @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+  private List<Message> receivedMessages;
+
+
+  @PrePersist
+  public void prePersist() {
+    this.dateCreated = LocalDateTime.now();
+  }
 }
