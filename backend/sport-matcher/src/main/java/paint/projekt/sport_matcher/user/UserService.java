@@ -16,11 +16,14 @@ public class UserService {
         return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
+                .name(user.getName())
+                .dateCreated(user.getDateCreated())
                 .email(user.getEmail())
                 .role(user.getRole())
-                .enabled(user.getEnabled())
+                .isActive(user.getIsActive())
                 .build();
     }
+
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()

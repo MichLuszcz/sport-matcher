@@ -15,6 +15,6 @@ public class AdRequestDTO extends RepresentationModel<AdRequestDTO> {
     private Long id;
     private Long userId;
     private Long adId;
-//    private RequestStatus status;
+    private RequestStatus status;
     private LocalDateTime createdAt;
 }
