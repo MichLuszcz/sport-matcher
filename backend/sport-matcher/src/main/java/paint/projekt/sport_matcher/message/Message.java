@@ -7,6 +7,20 @@ import paint.projekt.sport_matcher.user.User;
 
 import java.time.LocalDateTime;
 
+/**
+ * Encja reprezentująca wiadomość wysyłaną między użytkownikami.
+ * Używana do komunikacji między użytkownikami w kontekście ogłoszeń.
+ *
+ * Pola wiadomości:
+ * id – identyfikator wiadomości
+ * sender – użytkownik, który wysłał wiadomość
+ * receiver – użytkownik, który otrzymał wiadomość
+ * content – treść wiadomości
+ * sentAt – data i godzina wysłania wiadomości
+ *
+ * prePersist() - automatycznie ustawia datę i czas wysłania wiadomości na bieżący czas.
+ */
+
 @Entity
 @Table(name = "messages")
 @Getter

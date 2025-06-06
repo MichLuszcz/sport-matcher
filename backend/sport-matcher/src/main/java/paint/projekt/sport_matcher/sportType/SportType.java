@@ -7,6 +7,16 @@ import paint.projekt.sport_matcher.ad.Ad;
 
 import java.util.List;
 
+/**
+ * Encja reprezentująca typ sportu, którego dotyczy ogłoszenie.
+ * Służy do klasyfikacji ogłoszeń według rodzaju aktywności fizycznej.
+ *
+ * Pola:
+ * - id – identyfikator typu sportu
+ * - name – pełna nazwa sportu
+ * - ads – lista ogłoszeń, które dotyczą tego sportu (relacja 1:N, Jeden typ sportu do wielu ogłoszeń, ale ogłoszenie może mieć określony tylko jeden typ)
+ */
+
 @Entity
 @Table(name = "sports_types")
 @Getter

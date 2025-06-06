@@ -1,4 +1,6 @@
 package paint.projekt.sport_matcher.ad;
+import paint.projekt.sport_matcher.sportType.SportType;
+import paint.projekt.sport_matcher.user.User;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,9 +8,32 @@ import lombok.Setter;
 import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.user.User;
 
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+/**
+ * Encja reprezentująca ogłoszenie szukania partnera do wydarzenia.
+ * Używana do wyświetlania i tworzenia ogłoszeń.
+ *
+ * Ogłoszenie zawiera:
+ * id - identyfikator ogłoszenia
+ * user - Użytkownik który utworzył ogłoszenie (obiekt User)
+ * sportType - typ sportu, ktorego dotyczy wydarzenie
+ * title - tytuł ogłoszenia
+ * description - dodatkowy opis ogłoszenia
+ * dateStart - data rozpoczęcia wydarzenia (nie może być w przeszłości)
+ * dateEnd - data zakończenia wydarzenia (nie może być wcześniejsza niż dateStart
+ * timeStart - godzina rozpoczęcia (nie może być w przeszłości)
+ * timeEnd - godzina zakończenia (nie może być wcześniejsza niż timeStart)
+ * location - lokalizacja wydarzenia
+ * participants - liczba poszukiwanych uczestników
+ * isActive - określa czy ogłoszenie jest aktywne, czy nie (znaleziono uczestników, usunieto ogłoszenie itp.)
+ * creationDatetime - data i czas utworzenia ogłoszenia, określane przez prePersist().
+ *
+ * prePersist() - metoda która automatycznie ustawia datę utworzenia ogłoszenia na aktualną datę przy zapisie do bazy danych
+ */
 
 @Entity
 @Table(name = "ads")

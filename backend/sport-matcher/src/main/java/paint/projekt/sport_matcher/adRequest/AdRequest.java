@@ -1,5 +1,6 @@
 package paint.projekt.sport_matcher.adRequest;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +9,20 @@ import paint.projekt.sport_matcher.user.User;
 
 import java.time.LocalDateTime;
 
-
 /**
- * Request to join an event
+ * Encja reprezentująca zgłoszenie użytkownika do wydarzenia z ogłoszenia.
+ * Używana gdy użytkownik chce dołączyć do wydarzenia z ogłoszenia.
+ *
+ * Pola zgłoszenia:
+ * id – identyfikator zgłoszenia
+ * user – użytkownik, który wysłał zgłoszenie
+ * ad – ogłoszenie do którego użytkownik się zgłasza
+ * status – status zgłoszenia (wartości z enumu RequestStatus: PENDING, ACCEPTED, REJECTED)
+ * createdAt – data i czas wysłania zgłoszenia
+ *
+ * prePersist() - metoda która automatycznie ustawia datę wysłania prośby o dołączenie do wydarzenia na aktualną datę przy zapisie do bazy danych
  */
+
 @Entity
 @Table(name = "ad_requests")
 @Getter
