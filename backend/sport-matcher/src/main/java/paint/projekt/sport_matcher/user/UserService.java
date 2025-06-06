@@ -2,13 +2,15 @@ package paint.projekt.sport_matcher.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+// In a real application, you would use a password encoder
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    // private final PasswordEncoder passwordEncoder; // Inject password encoder
 
     private UserDTO convertToDto(User user) {
         return UserDTO.builder()
@@ -26,6 +28,9 @@ public class UserService {
                 .toList();
     }
 
+    public UserDTO getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(this::convertToDto)
+                .orElse(null);
+    }
 }
-
-

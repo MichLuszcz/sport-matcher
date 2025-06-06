@@ -1,31 +1,26 @@
 package paint.projekt.sport_matcher.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController // This means that this class is a Controller
+import java.util.List;
+
+
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
+@RequestMapping(path = "/api/users")
 public class UserController {
-  @Autowired
-  private UserRepository userRepository;
-  private final UserService userService;
 
-  @PostMapping(path="/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser (@RequestParam String name
-      , @RequestParam String email) {
+    private final UserService userService;
 
-    User n = new User();
-    n.setName(name);
-    n.setEmail(email);
-    userRepository.save(n);
-    return "Saved";
-  }
-
-  @GetMapping(path="/all")
-  public @ResponseBody Iterable<UserDTO> getAllUsers() {
-    // This returns a JSON or XML with the users
-    return userService.getAllUsers();
-  }
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO userDTO = userService.getUserById(id);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
