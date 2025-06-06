@@ -6,9 +6,27 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
+import paint.projekt.sport_matcher.ad.Ad;
+import paint.projekt.sport_matcher.message.Message;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+/**
+ * Encja reprezentująca konto użytkownika aplikacji.
+ *
+ * Pola użytkownika:
+ * id – identyfikator użytkownika
+ * username – unikalna nazwa użytkownika
+ * email – unikaly email potrzebny do założenia konta
+ * password – hasło do konta
+ * name – imie użytkownika
+ * dateCreated - data utworzenia konta
+ * isActive - status aktywności konta (true - istnieje, false - nie, np usunięte)
+ * role - rola użytkownika (USER/ADMIN)
+ *
+ * prePersist() - automatycznie ustawia datę i czas utworzenia konta na bieżący czas.
+ */
 
 @Entity
 @Table(name = "users")
@@ -42,9 +60,6 @@ public class User {
   private Boolean isActive = true;
 
   private String role;
-
-  private Boolean enabled;
-
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Ad> ads;
