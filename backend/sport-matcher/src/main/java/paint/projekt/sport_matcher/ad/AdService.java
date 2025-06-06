@@ -2,6 +2,10 @@ package paint.projekt.sport_matcher.ad;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.sportType.SportType;
+import paint.projekt.sport_matcher.sportType.SportTypeRepository;
+import paint.projekt.sport_matcher.user.User;
+import paint.projekt.sport_matcher.user.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +14,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdService {
     private final AdRepository adRepository;
+    private final UserRepository userRepository;
+    private final SportTypeRepository sportTypeRepository;
 
     private AdDTO convertToDto(Ad ad) {
         return AdDTO.builder()
@@ -31,25 +37,26 @@ public class AdService {
                 .build();
     }
 
-    // Method to create a new Ad
-    public AdDTO createAd(AdCreateDTO createDTO) {
-        User user = userRepository.findById(createDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + createDTO.getUserId()));
+    // Method to create a new Ad using AdDTO
+    public AdDTO createAd(AdDTO adDTO) {
+        User user = userRepository.findById(adDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + adDTO.getUserId()));
 
-        SportType sportType = sportTypeRepository.findById(createDTO.getSportTypeId())
-                .orElseThrow(() -> new RuntimeException("SportType not found with id: " + createDTO.getSportTypeId()));
+        SportType sportType = sportTypeRepository.findById(adDTO.getSportTypeId())
+                .orElseThrow(() -> new RuntimeException("SportType not found with id: " + adDTO.getSportTypeId()));
 
         Ad ad = new Ad();
         ad.setUser(user);
         ad.setSportType(sportType);
-        ad.setTitle(createDTO.getTitle());
-        ad.setDescription(createDTO.getDescription());
-        ad.setDateStart(createDTO.getDateStart());
-        ad.setDateEnd(createDTO.getDateEnd());
-        ad.setTimeStart(createDTO.getTimeStart());
-        ad.setTimeEnd(createDTO.getTimeEnd());
-        ad.setLocation(createDTO.getLocation());
-        ad.setParticipants(createDTO.getParticipants());
+        ad.setTitle(adDTO.getTitle());
+        ad.setDescription(adDTO.getDescription());
+        ad.setDateStart(adDTO.getDateStart());
+        ad.setDateEnd(adDTO.getDateEnd());
+        ad.setTimeStart(adDTO.getTimeStart());
+        ad.setTimeEnd(adDTO.getTimeEnd());
+        ad.setLocation(adDTO.getLocation());
+        ad.setParticipants(adDTO.getParticipants());
+        // isActive and creationDatetime are set by default in the entity
 
         Ad savedAd = adRepository.save(ad);
         return convertToDto(savedAd);
@@ -72,6 +79,4 @@ public class AdService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-
-
 }
