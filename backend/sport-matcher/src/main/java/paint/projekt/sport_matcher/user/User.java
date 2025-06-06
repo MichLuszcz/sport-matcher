@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
+import paint.projekt.sport_matcher.ad.Ad;
+import paint.projekt.sport_matcher.message.Message;
 
 import java.time.LocalDateTime;
 import java.util.List;

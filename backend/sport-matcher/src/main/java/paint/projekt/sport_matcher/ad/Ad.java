@@ -1,16 +1,14 @@
 package paint.projekt.sport_matcher.ad;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
+import paint.projekt.sport_matcher.sportType.SportType;
+import paint.projekt.sport_matcher.user.User;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Table(name = "ads")

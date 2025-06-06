@@ -1,11 +1,9 @@
 package paint.projekt.sport_matcher.message;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
+import paint.projekt.sport_matcher.user.User;
 
 import java.time.LocalDateTime;
 
