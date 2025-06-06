@@ -2,30 +2,27 @@ package paint.projekt.sport_matcher.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserSerivce {
-    private final UserRepository userRepository;
+public class MessageService {
+    private final MessageRepository messageRepository;
 
-    private UserDTO convertToDto(User user) {
-        return UserDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .enabled(user.getEnabled())
+    private MessageDTO convertToDto(Message message) {
+        return MessageDTO.builder()
+                .id(message.getId())
+                .senderId(message.getSender().getId())
+                .receiverId(message.getReceiver().getId())
+                .content(message.getContent())
+                .sentAt(message.getSentAt())
                 .build();
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
+    public List<MessageDTO> getAllMessages() {
+        return messageRepository.findAll().stream()
                 .map(this::convertToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
-
 }
-
-

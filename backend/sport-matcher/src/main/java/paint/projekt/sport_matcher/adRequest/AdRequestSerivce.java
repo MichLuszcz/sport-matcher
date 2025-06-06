@@ -2,30 +2,27 @@ package paint.projekt.sport_matcher.adRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserSerivce {
-    private final UserRepository userRepository;
+public class AdRequestService {
+    private final AdRequestRepository adRequestRepository;
 
-    private UserDTO convertToDto(User user) {
-        return UserDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .enabled(user.getEnabled())
+    private AdRequestDTO convertToDto(AdRequest adRequest) {
+        return AdRequestDTO.builder()
+                .id(adRequest.getId())
+                .userId(adRequest.getUser().getId())
+                .adId(adRequest.getAd().getId())
+                .status(adRequest.getStatus())
+                .createdAt(adRequest.getCreatedAt())
                 .build();
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
+    public List<AdRequestDTO> getAllAdRequests() {
+        return adRequestRepository.findAll().stream()
                 .map(this::convertToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
-
 }
-
-

@@ -5,15 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
-public class UserDTO extends RepresentationModel<UserDTO> {
+public class MessageDTO extends RepresentationModel<MessageDTO> {
     private Long id;
-    private String username;
-    private String email;
-    private String role;
-    private Boolean enabled;
+    private Long senderId;
+    private Long receiverId;
+    private String content;
+    private LocalDateTime sentAt;
 }

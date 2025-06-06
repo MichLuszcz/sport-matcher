@@ -2,30 +2,24 @@ package paint.projekt.sport_matcher.sportType;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserSerivce {
-    private final UserRepository userRepository;
+public class SportTypeService {
+    private final SportTypeRepository sportTypeRepository;
 
-    private UserDTO convertToDto(User user) {
-        return UserDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .enabled(user.getEnabled())
+    private SportTypeDTO convertToDto(SportType sportType) {
+        return SportTypeDTO.builder()
+                .id(sportType.getId())
+                .name(sportType.getName())
                 .build();
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
+    public List<SportTypeDTO> getAllSportTypes() {
+        return sportTypeRepository.findAll().stream()
                 .map(this::convertToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
-
 }
-
-
