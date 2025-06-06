@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   @Autowired
   private UserRepository userRepository;
-  private final UserSerivce userService;
+  private final UserService userService;
 
   @PostMapping(path="/add") // Map ONLY POST Requests
   public @ResponseBody String addNewUser (@RequestParam String name

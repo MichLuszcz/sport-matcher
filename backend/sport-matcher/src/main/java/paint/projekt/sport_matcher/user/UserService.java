@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserSerivce {
+public class UserService {
     private final UserRepository userRepository;
 
     private UserDTO convertToDto(User user) {

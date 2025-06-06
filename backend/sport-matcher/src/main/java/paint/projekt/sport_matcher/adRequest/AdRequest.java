@@ -1,11 +1,10 @@
 package paint.projekt.sport_matcher.adRequest;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
+import paint.projekt.sport_matcher.ad.Ad;
+import paint.projekt.sport_matcher.user.User;
 
 import java.time.LocalDateTime;
 
@@ -28,9 +27,9 @@ public class AdRequest {
   private Ad ad;
 
 
-  @Column(name = "status")
-  @Enumerated(EnumType.STRING)
-  private RequestStatus status = RequestStatus.PENDING;
+//  @Column(name = "status")
+//  @Enumerated(EnumType.STRING)
+//  private RequestStatus status = RequestStatus.PENDING;
 
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;

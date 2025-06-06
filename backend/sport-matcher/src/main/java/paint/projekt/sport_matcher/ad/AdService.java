@@ -2,8 +2,6 @@ package paint.projekt.sport_matcher.ad;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import paint.projekt.sport_matcher.user.User;
-import paint.projekt.sport_matcher.sportType.SportType;
 
 import java.util.List;
 import java.util.stream.Collectors;

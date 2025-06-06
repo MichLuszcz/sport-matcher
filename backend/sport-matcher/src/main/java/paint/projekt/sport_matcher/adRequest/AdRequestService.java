@@ -15,7 +15,7 @@ public class AdRequestService {
                 .id(adRequest.getId())
                 .userId(adRequest.getUser().getId())
                 .adId(adRequest.getAd().getId())
-                .status(adRequest.getStatus())
+//                .status(adRequest.getStatus())
                 .createdAt(adRequest.getCreatedAt())
                 .build();
     }
