@@ -1,4 +1,4 @@
-#root {
+/*#root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +39,90 @@
 
 .read-the-docs {
   color: #888;
+}
+*/
+main {
+  overflow-y: scroll;
+  flex: 0 1 auto;
+  max-height: 100%;
+}
+
+.fit {
+  height: 100%;
+}
+
+.top {
+  z-index: 1;
+}
+
+.stack {
+  display: grid;
+  place-items: center;
+}
+
+.stack > * {
+  grid-area: 1/1;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+  object-fit: cover;
+  transition: opacity 2.5s ease;
+  opacity: 0;
+  filter: brightness(50%);
+}
+
+.image.active {
+  opacity: 1;
+}
+
+.textbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.textbox h1 {
+  font-size: 5em;
+  text-shadow: 3px 3px 3px black;
+  margin-block: 0;
+}
+
+.flex-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.textbox span {
+  font-size: 2em;
+  text-shadow: 3px 3px 3px black;
+}
+
+.textbox button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  height: 50%
+}
+.textbox button:hover {
+  border-color: #646cff;
+}
+.textbox button:focus,
+.textbox button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }

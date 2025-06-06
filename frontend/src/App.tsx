@@ -1,30 +1,45 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect, useRef, useState } from "react";
+// Images from freepik.com
+import basketball from "./assets/basketball.jpg";
+import football from "./assets/football.jpg";
+import tennis from "./assets/tennis.jpg";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
+const images = [basketball, football, tennis] as const;
 
+function App() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slideTime = 5000;
+  const slideInterval = useRef(0);
+
+  useEffect(() => {
+    slideInterval.current = setInterval(() => {
+      setCurrentSlide((currentSlide + 1) % images.length);
+    }, slideTime);
+
+    return () => {
+      clearInterval(slideInterval.current);
+    };
+  });
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main>
+      <div className="stack fit">
+        {images.map((image, index) => {
+          const className = (() => {
+            if (index === currentSlide) return "image active";
+            else return "image";
+          })();
+          return <img id={`titleImage${index}`} key={index} className={className} src={image} />;
+        })}
+        <div className="textbox top">
+          <h1>Sports Matcher</h1>
+          <span>Bored? Find people to play sports games with!</span>
+          <div className="flex-horizontal">
+            <button>Find sports</button>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    </main>
   );
 }
 
