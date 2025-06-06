@@ -2,6 +2,8 @@ package paint.projekt.sport_matcher.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.user.User;
+import paint.projekt.sport_matcher.user.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +11,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MessageService {
     private final MessageRepository messageRepository;
+    private final UserRepository userRepository;
 
     private MessageDTO convertToDto(Message message) {
         return MessageDTO.builder()
@@ -20,8 +23,43 @@ public class MessageService {
                 .build();
     }
 
+    public MessageDTO createMessage(MessageDTO messageDTO) {
+        User sender = userRepository.findById(messageDTO.getSenderId())
+                .orElseThrow(() -> new RuntimeException("Sender not found with id: " + messageDTO.getSenderId()));
+
+        User receiver = userRepository.findById(messageDTO.getReceiverId())
+                .orElseThrow(() -> new RuntimeException("Receiver not found with id: " + messageDTO.getReceiverId()));
+
+        Message message = new Message();
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setContent(messageDTO.getContent());
+        // sentAt is set by default in the entity
+
+        Message savedMessage = messageRepository.save(message);
+        return convertToDto(savedMessage);
+    }
+
     public List<MessageDTO> getAllMessages() {
         return messageRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public MessageDTO getMessageById(Long id) {
+        return messageRepository.findById(id)
+                .map(this::convertToDto)
+                .orElse(null);
+    }
+
+    public List<MessageDTO> getMessagesBySenderId(Long senderId) {
+        return messageRepository.findAllBySenderId(senderId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<MessageDTO> getMessagesByReceiverId(Long receiverId) {
+        return messageRepository.findAllByReceiverId(receiverId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
