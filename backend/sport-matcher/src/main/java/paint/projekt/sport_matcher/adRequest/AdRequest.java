@@ -8,34 +8,38 @@ import paint.projekt.sport_matcher.user.User;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * Request to join an event
+ */
 @Entity
 @Table(name = "ad_requests")
 @Getter
 @Setter
 public class AdRequest {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "ad_id", nullable = false)
-  private Ad ad;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "ad_id", nullable = false)
+    private Ad ad;
 
 
 //  @Column(name = "status")
 //  @Enumerated(EnumType.STRING)
 //  private RequestStatus status = RequestStatus.PENDING;
 
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-  @PrePersist
-  public void prePersist() {
-    this.createdAt = LocalDateTime.now();
-  }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
