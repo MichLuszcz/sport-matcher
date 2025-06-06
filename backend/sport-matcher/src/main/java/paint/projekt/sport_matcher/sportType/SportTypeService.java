@@ -22,4 +22,16 @@ public class SportTypeService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    public SportTypeDTO getSportTypeById(Long id) {
+        return sportTypeRepository.findById(id)
+                .map(this::convertToDto)
+                .orElse(null);
+    }
+
+    public SportTypeDTO getSportTypeByName(String name) {
+        return sportTypeRepository.findByName(name)
+                .map(this::convertToDto)
+                .orElse(null);
+    }
 }
