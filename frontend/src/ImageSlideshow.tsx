@@ -12,12 +12,13 @@ export default function ImageSlideshow() {
   const slideInterval = useRef(0);
 
   useEffect(() => {
-    slideInterval.current = setInterval(() => {
+    console.log("useEffect called!")
+    slideInterval.current = setTimeout(() => {
       setCurrentSlide((currentSlide + 1) % images.length);
     }, slideTime);
 
     return () => {
-      clearInterval(slideInterval.current);
+      clearTimeout(slideInterval.current);
     };
   });
 
