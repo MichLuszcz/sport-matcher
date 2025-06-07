@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.adRequest.AdRequest;
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class AdController {
 
     // TODO create separate AddAdRequest records
     @PostMapping
-    public ResponseEntity<AdDTO> createAd(@RequestBody AdDTO adDTO) {
-        AdDTO createdAd = adService.createAd(adDTO);
+    public ResponseEntity<AdDTO> createAd(@RequestBody AdCreationRequest adCreateRequest) {
+        AdDTO createdAd = adService.createAd(adCreateRequest, 1L);
         return new ResponseEntity<>(createdAd, HttpStatus.CREATED);
     }
 

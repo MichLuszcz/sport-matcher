@@ -38,24 +38,25 @@ public class AdService {
     }
 
     // Method to create a new Ad using AdDTO
-    public AdDTO createAd(AdDTO adDTO) {
-        User user = userRepository.findById(adDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + adDTO.getUserId()));
+    public AdDTO createAd(AdCreationRequest adCreationRequest, Long userId) {
+        // todo get user by principal
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        SportType sportType = sportTypeRepository.findById(adDTO.getSportTypeId())
-                .orElseThrow(() -> new RuntimeException("SportType not found with id: " + adDTO.getSportTypeId()));
+        SportType sportType = sportTypeRepository.findById(adCreationRequest.sportTypeId())
+                .orElseThrow(() -> new RuntimeException("SportType not found with id: " + adCreationRequest.sportTypeId()));
 
         Ad ad = new Ad();
         ad.setUser(user);
         ad.setSportType(sportType);
-        ad.setTitle(adDTO.getTitle());
-        ad.setDescription(adDTO.getDescription());
-        ad.setDateStart(adDTO.getDateStart());
-        ad.setDateEnd(adDTO.getDateEnd());
-        ad.setTimeStart(adDTO.getTimeStart());
-        ad.setTimeEnd(adDTO.getTimeEnd());
-        ad.setLocation(adDTO.getLocation());
-        ad.setParticipants(adDTO.getParticipants());
+        ad.setTitle(adCreationRequest.title());
+        ad.setDescription(adCreationRequest.description());
+        ad.setDateStart(adCreationRequest.dateStart());
+        ad.setDateEnd(adCreationRequest.dateEnd());
+        ad.setTimeStart(adCreationRequest.timeStart());
+        ad.setTimeEnd(adCreationRequest.timeEnd());
+        ad.setLocation(adCreationRequest.location());
+        ad.setParticipants(adCreationRequest.participants());
         // isActive and creationDatetime are set by default in the entity
 
         Ad savedAd = adRepository.save(ad);
