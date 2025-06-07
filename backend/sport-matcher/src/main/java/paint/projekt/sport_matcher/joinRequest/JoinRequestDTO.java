@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.JoinRequest;
+package paint.projekt.sport_matcher.joinRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

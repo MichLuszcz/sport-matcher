@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.JoinRequest;
+package paint.projekt.sport_matcher.joinRequest;
 
 import jakarta.persistence.*;
 import lombok.Getter;

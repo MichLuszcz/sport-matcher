@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.JoinRequest;
+package paint.projekt.sport_matcher.joinRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
