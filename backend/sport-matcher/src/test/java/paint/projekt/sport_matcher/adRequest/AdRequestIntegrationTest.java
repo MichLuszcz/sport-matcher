@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = SportMatcherApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class AdControllerTest {
+class AdRequestIntegrationTest {
     private int port = 3306;
 
     @MockitoBean
@@ -40,7 +40,7 @@ class AdControllerTest {
     }
 
     @Test
-    public void getAdByIdExists() {
+    public void getAdRequestByIdExists() {
         var response = "aaa";
         assertEquals(response, "aaa");
     }

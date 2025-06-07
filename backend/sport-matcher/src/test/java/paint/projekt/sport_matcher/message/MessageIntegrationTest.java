@@ -1,17 +1,9 @@
-package paint.projekt.sport_matcher.ad;
+package paint.projekt.sport_matcher.message;
 
-import com.jayway.jsonpath.JsonPath;
-import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -19,11 +11,11 @@ import paint.projekt.sport_matcher.SportMatcherApplication;
 import paint.projekt.sport_matcher.utils.DummyData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = SportMatcherApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class AdControllerTest {
+public class MessageIntegrationTest {
+
     private int port = 3306;
 
     @MockitoBean
@@ -40,7 +32,7 @@ class AdControllerTest {
     }
 
     @Test
-    public void getAdByIdExists() {
+    public void getMessageByIdExists() {
         var response = "aaa";
         assertEquals(response, "aaa");
     }
