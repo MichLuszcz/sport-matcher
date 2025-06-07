@@ -33,7 +33,7 @@ public class AdService {
                 .location(ad.getLocation())
                 .participants(ad.getParticipants())
                 .isActive(ad.getIsActive())
-                .creationDatetime(ad.getCreationDatetime())
+                .creationDateTime(ad.getCreationDatetime())
                 .build();
     }
 

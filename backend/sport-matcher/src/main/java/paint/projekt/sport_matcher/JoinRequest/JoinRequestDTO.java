@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.adRequest;
+package paint.projekt.sport_matcher.JoinRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @Builder
-public class AdRequestDTO extends RepresentationModel<AdRequestDTO> {
+public class JoinRequestDTO extends RepresentationModel<JoinRequestDTO> {
     private Long id;
     private Long userId;
     private Long adId;

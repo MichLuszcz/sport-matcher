@@ -3,11 +3,11 @@ package paint.projekt.sport_matcher.utils;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.JoinRequest.JoinRequest;
 import paint.projekt.sport_matcher.ad.Ad;
 import paint.projekt.sport_matcher.ad.AdRepository;
-import paint.projekt.sport_matcher.adRequest.AdRequest;
-import paint.projekt.sport_matcher.adRequest.AdRequestRepository;
-import paint.projekt.sport_matcher.adRequest.RequestStatus;
+import paint.projekt.sport_matcher.JoinRequest.JoinRequestRepository;
+import paint.projekt.sport_matcher.JoinRequest.RequestStatus;
 import paint.projekt.sport_matcher.message.Message;
 import paint.projekt.sport_matcher.message.MessageRepository;
 import paint.projekt.sport_matcher.sportType.SportType;
@@ -16,10 +16,7 @@ import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Utility for creating and deleting dummy data for testing and demonstration purposes.
@@ -33,7 +30,7 @@ public class DummyData {
     private final UserRepository userRepository;
 //    private final PasswordEncoder passwordEncoder;
     private final AdRepository adRepository;
-    private final AdRequestRepository adRequestRepository;
+    private final JoinRequestRepository joinRequestRepository;
     private final MessageRepository messageRepository;
     private final SportTypeRepository sportTypeRepository;
 
@@ -52,9 +49,9 @@ public class DummyData {
     public Ad ad_tennis_partner;
     public Ad ad_inactive_ad;
 
-    public AdRequest adRequest_john_to_football;
-    public AdRequest adRequest_jane_to_football_accepted;
-    public AdRequest adRequest_mike_to_basketball_rejected;
+    public JoinRequest joinRequest_john_to_football;
+    public JoinRequest joinRequest_jane_to_football_accepted;
+    public JoinRequest joinRequest_mike_to_basketball_rejected;
 
     public Message message_john_to_jane;
     public Message message_jane_to_john;
@@ -174,23 +171,23 @@ public class DummyData {
         ad_inactive_ad = adRepository.save(ad_inactive_ad);
 
         // 4. Create and save AdRequest entities
-        adRequest_john_to_football = new AdRequest();
-        adRequest_john_to_football.setUser(user_mike); // Mike applies to John's football ad
-        adRequest_john_to_football.setAd(ad_football_match);
-        adRequest_john_to_football.setStatus(RequestStatus.PENDING); // Default status is PENDING, but explicitly setting
-        adRequest_john_to_football = adRequestRepository.save(adRequest_john_to_football);
+        joinRequest_john_to_football = new JoinRequest();
+        joinRequest_john_to_football.setUser(user_mike); // Mike applies to John's football ad
+        joinRequest_john_to_football.setAd(ad_football_match);
+        joinRequest_john_to_football.setStatus(RequestStatus.PENDING); // Default status is PENDING, but explicitly setting
+        joinRequest_john_to_football = joinRequestRepository.save(joinRequest_john_to_football);
 
-        adRequest_jane_to_football_accepted = new AdRequest();
-        adRequest_jane_to_football_accepted.setUser(user_jane); // Jane applies to John's football ad
-        adRequest_jane_to_football_accepted.setAd(ad_football_match);
-        adRequest_jane_to_football_accepted.setStatus(RequestStatus.ACCEPTED); // Accepted status
-        adRequest_jane_to_football_accepted = adRequestRepository.save(adRequest_jane_to_football_accepted);
+        joinRequest_jane_to_football_accepted = new JoinRequest();
+        joinRequest_jane_to_football_accepted.setUser(user_jane); // Jane applies to John's football ad
+        joinRequest_jane_to_football_accepted.setAd(ad_football_match);
+        joinRequest_jane_to_football_accepted.setStatus(RequestStatus.ACCEPTED); // Accepted status
+        joinRequest_jane_to_football_accepted = joinRequestRepository.save(joinRequest_jane_to_football_accepted);
 
-        adRequest_mike_to_basketball_rejected = new AdRequest();
-        adRequest_mike_to_basketball_rejected.setUser(user_john); // John applies to Jane's basketball ad
-        adRequest_mike_to_basketball_rejected.setAd(ad_basketball_pickup);
-        adRequest_mike_to_basketball_rejected.setStatus(RequestStatus.REJECTED); // Rejected status
-        adRequest_mike_to_basketball_rejected = adRequestRepository.save(adRequest_mike_to_basketball_rejected);
+        joinRequest_mike_to_basketball_rejected = new JoinRequest();
+        joinRequest_mike_to_basketball_rejected.setUser(user_john); // John applies to Jane's basketball ad
+        joinRequest_mike_to_basketball_rejected.setAd(ad_basketball_pickup);
+        joinRequest_mike_to_basketball_rejected.setStatus(RequestStatus.REJECTED); // Rejected status
+        joinRequest_mike_to_basketball_rejected = joinRequestRepository.save(joinRequest_mike_to_basketball_rejected);
 
         // 5. Create and save Message entities
         message_john_to_jane = new Message();
@@ -219,7 +216,7 @@ public class DummyData {
     public void deleteAll() {
         // Delete dependent entities first to avoid foreign key constraint violations
         messageRepository.deleteAll();
-        adRequestRepository.deleteAll();
+        joinRequestRepository.deleteAll();
         adRepository.deleteAll();
         sportTypeRepository.deleteAll();
         userRepository.deleteAll();

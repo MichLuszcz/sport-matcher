@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.adRequest;
+package paint.projekt.sport_matcher.JoinRequest;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,10 +23,10 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-@Table(name = "ad_requests")
+@Table(name = "join_requests")
 @Getter
 @Setter
-public class AdRequest {
+public class JoinRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

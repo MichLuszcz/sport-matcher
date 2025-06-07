@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.adRequest;
+package paint.projekt.sport_matcher.JoinRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdRequestService {
-    private final AdRequestRepository adRequestRepository;
+public class JoinRequestService {
+    private final JoinRequestRepository joinRequestRepository;
     private final UserRepository userRepository;
     private final AdRepository adRepository;
 
-    private AdRequestDTO convertToDto(AdRequest adRequest) {
-        return AdRequestDTO.builder()
+    private JoinRequestDTO convertToDto(JoinRequest adRequest) {
+        return JoinRequestDTO.builder()
                 .id(adRequest.getId())
                 .userId(adRequest.getUser().getId())
                 .adId(adRequest.getAd().getId())
@@ -27,43 +27,43 @@ public class AdRequestService {
                 .build();
     }
 
-    public AdRequestDTO createAdRequest(AdRequestCreationRequest adRequestCreationRequest) {
+    public JoinRequestDTO createJoinRequest(JoinRequestCreationRequest joinRequestCreationRequest) {
         Long userId = 1L;
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        Ad ad = adRepository.findById(adRequestCreationRequest.adId())
-                .orElseThrow(() -> new RuntimeException("Ad not found with id: " + adRequestCreationRequest.adId()));
+        Ad ad = adRepository.findById(joinRequestCreationRequest.adId())
+                .orElseThrow(() -> new RuntimeException("Ad not found with id: " + joinRequestCreationRequest.adId()));
 
-        AdRequest adRequest = new AdRequest();
+        JoinRequest adRequest = new JoinRequest();
         adRequest.setUser(user);
         adRequest.setAd(ad);
         // Status and createdAt are set by default in the entity
 
-        AdRequest savedAdRequest = adRequestRepository.save(adRequest);
-        return convertToDto(savedAdRequest);
+        JoinRequest savedJoinRequest = joinRequestRepository.save(adRequest);
+        return convertToDto(savedJoinRequest);
     }
 
-    public List<AdRequestDTO> getAllAdRequests() {
-        return adRequestRepository.findAll().stream()
+    public List<JoinRequestDTO> getAllJoinRequests() {
+        return joinRequestRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public AdRequestDTO getAdRequestById(Long id) {
-        return adRequestRepository.findById(id)
+    public JoinRequestDTO getJoinRequestById(Long id) {
+        return joinRequestRepository.findById(id)
                 .map(this::convertToDto)
                 .orElse(null);
     }
 
-    public List<AdRequestDTO> getAdRequestsByUserId(Long userId) {
-        return adRequestRepository.findAllByUserId(userId).stream()
+    public List<JoinRequestDTO> getJoinRequestsByUserId(Long userId) {
+        return joinRequestRepository.findAllByUserId(userId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public List<AdRequestDTO> getAdRequestsByAdId(Long adId) {
-        return adRequestRepository.findAllByAdId(adId).stream()
+    public List<JoinRequestDTO> getJoinRequestsByAdId(Long adId) {
+        return joinRequestRepository.findAllByAdId(adId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
