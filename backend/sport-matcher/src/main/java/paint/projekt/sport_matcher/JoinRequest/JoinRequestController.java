@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/ad-requests")
+@RequestMapping(path = "/api/join-requests")
 public class JoinRequestController {
 
     private final JoinRequestService joinRequestService;
