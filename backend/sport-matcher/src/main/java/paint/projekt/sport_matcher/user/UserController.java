@@ -1,7 +1,6 @@
 package paint.projekt.sport_matcher.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +26,15 @@ public class UserController {
         UserDTO userDTO = userService.getUserById(id);
         if (userDTO != null) {
             return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        var users = userService.getAllUsers();
+        if (!users.isEmpty()) {
+            return ResponseEntity.ok(users);
         }
         return ResponseEntity.notFound().build();
     }
