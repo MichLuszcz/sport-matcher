@@ -13,6 +13,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+app:
+  delete-tokens-cron-expression: "0 0 0 * * *" # Every day at midnight
+#  confirm-email-url: "/users/verify/"
+#  reset-password-url: "/users/reset-password/"
+security:
+  jwt:
+    valid-for-seconds: 3600
 #logging:
 #  level:
 #    org.springframework: TRACE
