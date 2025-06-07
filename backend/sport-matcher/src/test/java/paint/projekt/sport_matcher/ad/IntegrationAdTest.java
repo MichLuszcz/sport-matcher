@@ -1,34 +1,42 @@
 package paint.projekt.sport_matcher.ad;
 
 import com.jayway.jsonpath.JsonPath;
+import org.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import paint.projekt.sport_matcher.SportMatcherApplication;
 import paint.projekt.sport_matcher.user.UserRepository;
 import paint.projekt.sport_matcher.sportType.SportTypeRepository;
 import paint.projekt.sport_matcher.utils.DummyData;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static paint.projekt.sport_matcher.utils.UrlBuilder.buildUrl;
-
+@Testcontainers
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = SportMatcherApplication.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext()
 class IntegrationAdTest {
 
     @LocalServerPort
@@ -61,92 +69,80 @@ class IntegrationAdTest {
         headers.clear();
     }
 
+    @Container
+    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
+            .withDatabaseName("sport_matcher")
+            .withUsername("myuser")
+            .withPassword("secret");
+
+    @DynamicPropertySource
+    static void overrideDatasourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysql::getJdbcUrl);
+        registry.add("spring.datasource.username", mysql::getUsername);
+        registry.add("spring.datasource.password", mysql::getPassword);
+    }
+
     @Test
     void createAdSuccessfully() {
 
-        AdCreationRequest ad1 = new AdCreationRequest(1L, "ad1", "descr1", LocalDate.now(), LocalDate.now(), LocalTime.now(), LocalTime.now(), "Warszawa", 2);
+        AdCreationRequest request = new AdCreationRequest(1L, "ad1", "descr1", LocalDate.now(), LocalDate.now(), LocalTime.now(), LocalTime.now(), "Warszawa", 2);
 
         var response = restTemplate.exchange(
                 buildUrl("/api/ads/", port),
                 HttpMethod.POST,
-                new HttpEntity<>(headers),
+                new HttpEntity<>(request, headers),
                 String.class
         );
         var json = JsonPath.parse(response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Looking for a football partner", json.read("$.title"));
-//        assertEquals(data.user_john.getId(), json.read("$.title");
         assertEquals(data.sportType_football.getId(), json.read("$.sportId"));
         assertTrue(json.read("$.isActive"));
         assertNotNull(json.read("$.creationDateTime"));
     }
 
-//    @Test
-//    void getAllAds() {
-//        // football
-//
-//        restTemplate.postForEntity(getBaseUrl(), ad1, AdDTO.class);
-//        var response = restTemplate.exchange(
-//                buildUrl("/api/ads/1", port),
-//                HttpMethod.GET,
-//                new HttpEntity<>(headers),
-//                String.class
-//        );
-//
-//        AdDTO ad2 = AdDTO.builder()
-//                .userId(data.user_jane.getId())
-//                .sportTypeId(data.sportType_tennis.getId())
-//                .title("Ad 2")
-//                .dateStart(LocalDate.now())
-//                .timeStart(LocalTime.now())
-//                .location("Loc 2")
-//                .participants(3)
-//                .build();
-//        restTemplate.postForEntity(getBaseUrl(), ad2, AdDTO.class);
-//
-//        ResponseEntity<List> response = restTemplate.getForEntity(getBaseUrl(), List.class);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertNotNull(response.getBody());
-//        assertEquals(2, response.getBody().size());
-//
-//        // Further checks can be done by parsing the list and checking individual ad properties
-//        // For simplicity, we check if the titles are present using JsonPath on the raw response body
-//        String jsonResponse = restTemplate.getForObject(getBaseUrl(), String.class);
-//        JSONArray titles = JsonPath.read(jsonResponse, "$[*].title");
+    @Test
+    void getAllAds() {
+        // football
+
+        var response = restTemplate.exchange(
+                buildUrl("/api/ads", port),
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                String.class
+        );
+        var json = JsonPath.parse(response.getBody());
+        List<Map<String, Object>> ads = json.read("$");
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, ads.size());
+
+        assertTrue(ads.get(0).get("title").toString().contains("Ad1"));
 //        assertTrue(titles.contains("Ad 1"));
 //        assertTrue(titles.contains("Ad 2"));
-//    }
-//
-//    @Test
-//    void getAdByIdExists() {
-//        // Create an ad to retrieve
-//        AdDTO createdAdDTO = restTemplate.postForEntity(
-//                        getBaseUrl(),
-//                        AdDTO.builder()
-//                                .userId(testUser.getId())
-//                                .sportTypeId(testSportType.getId())
-//                                .title("Specific Ad")
-//                                .dateStart(LocalDate.now())
-//                                .timeStart(LocalTime.now())
-//                                .location("Specific Location")
-//                                .participants(1)
-//                                .build(),
-//                        AdDTO.class)
-//                .getBody();
-//        assertNotNull(createdAdDTO);
-//        Long adId = createdAdDTO.getId();
-//
-//        ResponseEntity<AdDTO> response = restTemplate.getForEntity(getBaseUrl() + "/" + adId, AdDTO.class);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertNotNull(response.getBody());
-//        assertEquals(adId, response.getBody().getId());
-//        assertEquals("Specific Ad", response.getBody().getTitle());
-//        assertEquals("Specific Location", response.getBody().getLocation());
-//    }
-//
+    }
+
+    @Test
+    void getAdByIdExists() {
+
+        var response = restTemplate.exchange(
+        buildUrl("/api/ads/2" , port),
+        HttpMethod.GET,
+        new HttpEntity<>(headers),
+        String.class
+        );
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
+        var json = JsonPath.parse(response.getBody());
+
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(data.ad_basketball_pickup.getId(), json.read("$.id"));
+        assertEquals(data.ad_basketball_pickup.getTitle(), json.read("$.title"));
+        assertEquals(data.ad_basketball_pickup.getLocation(), json.read("$.location"));
+    }
+
 //    @Test
 //    void getAdByIdNotFound() {
 //        ResponseEntity<AdDTO> response = restTemplate.getForEntity(getBaseUrl() + "/99999", AdDTO.class); // Non-existent ID
