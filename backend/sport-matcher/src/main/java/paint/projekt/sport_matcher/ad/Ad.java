@@ -1,4 +1,5 @@
 package paint.projekt.sport_matcher.ad;
+import paint.projekt.sport_matcher.JoinRequest.JoinRequest;
 import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.user.User;
 
@@ -12,6 +13,7 @@ import paint.projekt.sport_matcher.user.User;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Encja reprezentująca ogłoszenie szukania partnera do wydarzenia.
@@ -81,6 +83,10 @@ public class Ad {
 
   @Column(name = "creation_datetime")
   private LocalDateTime creationDatetime;
+
+  @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Column
+  private List<JoinRequest> joinRequests;
 
   @PrePersist
   public void prePersist() {

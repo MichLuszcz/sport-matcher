@@ -28,5 +28,5 @@ public class AdDTO extends RepresentationModel<AdDTO> {
     private String location;
     private Integer participants;
     private Boolean isActive;
-    private LocalDateTime creationDatetime;
+    private LocalDateTime creationDateTime;
 }
