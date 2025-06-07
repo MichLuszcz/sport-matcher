@@ -27,12 +27,13 @@ public class AdRequestService {
                 .build();
     }
 
-    public AdRequestDTO createAdRequest(AdRequestDTO adRequestDTO) {
-        User user = userRepository.findById(adRequestDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + adRequestDTO.getUserId()));
+    public AdRequestDTO createAdRequest(AdRequestCreationRequest adRequestCreationRequest) {
+        Long userId = 1L;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        Ad ad = adRepository.findById(adRequestDTO.getAdId())
-                .orElseThrow(() -> new RuntimeException("Ad not found with id: " + adRequestDTO.getAdId()));
+        Ad ad = adRepository.findById(adRequestCreationRequest.adId())
+                .orElseThrow(() -> new RuntimeException("Ad not found with id: " + adRequestCreationRequest.adId()));
 
         AdRequest adRequest = new AdRequest();
         adRequest.setUser(user);

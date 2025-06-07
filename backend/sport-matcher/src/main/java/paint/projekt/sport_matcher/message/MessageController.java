@@ -14,8 +14,8 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageDTO messageDTO) {
-        MessageDTO createdMessage = messageService.createMessage(messageDTO);
+    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageCreationRequest messageCreationRequest) {
+        MessageDTO createdMessage = messageService.createMessage(messageCreationRequest);
         return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
     }
 

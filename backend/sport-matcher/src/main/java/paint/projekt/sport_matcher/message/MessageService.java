@@ -23,17 +23,19 @@ public class MessageService {
                 .build();
     }
 
-    public MessageDTO createMessage(MessageDTO messageDTO) {
-        User sender = userRepository.findById(messageDTO.getSenderId())
-                .orElseThrow(() -> new RuntimeException("Sender not found with id: " + messageDTO.getSenderId()));
+    public MessageDTO createMessage(MessageCreationRequest messageCreationRequest) {
+        // todo validate with principal
+        Long userId = 1L;
+        User sender = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Sender not found with id: " + userId));
 
-        User receiver = userRepository.findById(messageDTO.getReceiverId())
-                .orElseThrow(() -> new RuntimeException("Receiver not found with id: " + messageDTO.getReceiverId()));
+        User receiver = userRepository.findById(messageCreationRequest.receiverId())
+                .orElseThrow(() -> new RuntimeException("Receiver not found with id: " + messageCreationRequest.receiverId()));
 
         Message message = new Message();
         message.setSender(sender);
         message.setReceiver(receiver);
-        message.setContent(messageDTO.getContent());
+        message.setContent(message.getContent());
         // sentAt is set by default in the entity
 
         Message savedMessage = messageRepository.save(message);

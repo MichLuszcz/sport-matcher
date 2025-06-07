@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.ad;
+package paint.projekt.sport_matcher.adRequest;
 
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;

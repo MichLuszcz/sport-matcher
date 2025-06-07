@@ -16,8 +16,8 @@ public class AdRequestController {
 
     // todo verify user with principal
     @PostMapping
-    public ResponseEntity<AdRequestDTO> createAdRequest(@RequestBody AdRequestDTO adRequestDTO) {
-        AdRequestDTO createdAdRequest = adRequestService.createAdRequest(adRequestDTO);
+    public ResponseEntity<AdRequestDTO> createAdRequest(@RequestBody AdRequestCreationRequest adRequestCreationRequest) {
+        AdRequestDTO createdAdRequest = adRequestService.createAdRequest(adRequestCreationRequest);
         return new ResponseEntity<>(createdAdRequest, HttpStatus.CREATED);
     }
 
