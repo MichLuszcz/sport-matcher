@@ -15,6 +15,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @PostMapping()
+    public UserDTO registerNewUser(@RequestBody RegisterRequest request) {
+//        return addLinks(
+          return  userService.registerNewUser(request);
+//        );
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO userDTO = userService.getUserById(id);

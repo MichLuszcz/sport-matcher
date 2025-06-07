@@ -3,11 +3,11 @@ package paint.projekt.sport_matcher.utils;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import paint.projekt.sport_matcher.JoinRequest.JoinRequest;
+import paint.projekt.sport_matcher.joinRequest.JoinRequest;
 import paint.projekt.sport_matcher.ad.Ad;
 import paint.projekt.sport_matcher.ad.AdRepository;
-import paint.projekt.sport_matcher.JoinRequest.JoinRequestRepository;
-import paint.projekt.sport_matcher.JoinRequest.RequestStatus;
+import paint.projekt.sport_matcher.joinRequest.JoinRequestRepository;
+import paint.projekt.sport_matcher.joinRequest.RequestStatus;
 import paint.projekt.sport_matcher.message.Message;
 import paint.projekt.sport_matcher.message.MessageRepository;
 import paint.projekt.sport_matcher.sportType.SportType;
@@ -64,41 +64,18 @@ public class DummyData {
      */
     public void addDummyData() {
         // 1. Create and save User entities
-        user_john = new User();
-        user_john.setUsername("john_doe");
-        user_john.setEmail("john.doe@example.com");
-        user_john.setPassword("password123");
-        user_john.setName("John Doe");
-        user_john.setRole("USER");
-        user_john.setIsActive(true);
+        user_john = new User("john_doe", "john.doe@example.com", "password123", "John Doe", "ROLE_USER", true);
         user_john = userRepository.save(user_john);
 
-        user_jane = new User();
-        user_jane.setUsername("jane_smith");
-        user_jane.setEmail("jane.smith@example.com");
-        user_jane.setPassword("securepass");
-        user_jane.setName("Jane Smith");
-        user_jane.setRole("USER");
-        user_jane.setIsActive(true);
+        user_jane = new User("jane_smith", "jane.smith@example.com", "securepass", "Jane Smith", "ROLE_USER", true);
         user_jane = userRepository.save(user_jane);
 
-        user_mike = new User();
-        user_mike.setUsername("mike_wazowski");
-        user_mike.setEmail("mike.wazowski@example.com");
-        user_mike.setPassword("mike123");
-        user_mike.setName("Mike Wazowski");
-        user_mike.setRole("USER");
-        user_mike.setIsActive(true);
+        user_mike = new User("mike_wazowski", "mike.wazowski@example.com", "mike123", "Mike Wazowski", "ROLE_USER", true);
         user_mike = userRepository.save(user_mike);
 
-        admin_alice = new User();
-        admin_alice.setUsername("admin_alice");
-        admin_alice.setEmail("admin.alice@example.com");
-        admin_alice.setPassword("adminpass");
-        admin_alice.setName("Alice Admin");
-        admin_alice.setRole("ADMIN");
-        admin_alice.setIsActive(true);
+        admin_alice = new User("admin_alice", "admin.alice@example.com", "adminpass", "Alice Admin", "ROLE_ADMIN", true);
         admin_alice = userRepository.save(admin_alice);
+
 
         // 2. Create and save SportType entities
         sportType_football = new SportType();

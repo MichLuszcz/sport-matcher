@@ -1,13 +1,11 @@
 package paint.projekt.sport_matcher.ad;
-import paint.projekt.sport_matcher.JoinRequest.JoinRequest;
+import paint.projekt.sport_matcher.joinRequest.JoinRequest;
 import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.user.User;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import paint.projekt.sport_matcher.sportType.SportType;
-import paint.projekt.sport_matcher.user.User;
 
 
 import java.time.LocalDateTime;

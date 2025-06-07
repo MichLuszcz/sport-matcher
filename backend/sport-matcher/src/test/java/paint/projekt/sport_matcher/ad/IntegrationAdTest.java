@@ -1,7 +1,6 @@
 package paint.projekt.sport_matcher.ad;
 
 import com.jayway.jsonpath.JsonPath;
-import org.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import paint.projekt.sport_matcher.user.UserRepository;
 import paint.projekt.sport_matcher.sportType.SportTypeRepository;
 import paint.projekt.sport_matcher.utils.DummyData;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
