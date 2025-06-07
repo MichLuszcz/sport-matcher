@@ -3,7 +3,9 @@ package paint.projekt.sport_matcher.joinRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class JoinRequestController {
 
     // todo verify user with principal
     @PostMapping
-    public ResponseEntity<JoinRequestDTO> createAdRequest(@RequestBody JoinRequestCreationRequest joinRequestCreationRequest) {
-        JoinRequestDTO createdAdRequest = joinRequestService.createJoinRequest(joinRequestCreationRequest);
+    public ResponseEntity<JoinRequestDTO> createAdRequest(@RequestBody JoinRequestCreationRequest joinRequestCreationRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        JoinRequestDTO createdAdRequest = joinRequestService.createJoinRequest(joinRequestCreationRequest, userPrincipal);
         return new ResponseEntity<>(createdAdRequest, HttpStatus.CREATED);
     }
 

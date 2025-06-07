@@ -2,6 +2,7 @@ package paint.projekt.sport_matcher.ad;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.sportType.SportTypeRepository;
 import paint.projekt.sport_matcher.user.User;
@@ -39,11 +40,11 @@ public class AdService {
     }
 
     // Method to create a new Ad using AdDTO
-    public AdDTO createAd(AdCreationRequest adCreationRequest, Long userId) {
+    public AdDTO createAd(AdCreationRequest adCreationRequest, UserPrincipal userPrincipal) {
         // todo get user by principal
         System.out.println("entered createAd");
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+        User user = userRepository.findById(userPrincipal.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userPrincipal.getUserId()));
 
         SportType sportType = sportTypeRepository.findById(adCreationRequest.sportTypeId())
                 .orElseThrow(() -> new RuntimeException("SportType not found with id: " + adCreationRequest.sportTypeId()));

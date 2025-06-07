@@ -2,6 +2,7 @@ package paint.projekt.sport_matcher.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
 import java.util.List;
@@ -23,9 +24,8 @@ public class MessageService {
                 .build();
     }
 
-    public MessageDTO createMessage(MessageCreationRequest messageCreationRequest) {
-        // todo validate with principal
-        Long userId = 1L;
+    public MessageDTO createMessage(MessageCreationRequest messageCreationRequest, UserPrincipal userPrincipal) {
+        Long userId = userPrincipal.getUserId();
         User sender = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Sender not found with id: " + userId));
 

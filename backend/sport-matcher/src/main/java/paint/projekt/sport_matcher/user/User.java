@@ -21,7 +21,7 @@ import java.util.List;
  * name – imie użytkownika
  * dateCreated - data utworzenia konta
  * isActive - status aktywności konta (true - istnieje, false - nie, np usunięte)
- * role - rola użytkownika (USER/ADMIN)
+ * role - rola użytkownika (ROLE_USER/ROLE_ADMIN)
  *
  * prePersist() - automatycznie ustawia datę i czas utworzenia konta na bieżący czas.
  */

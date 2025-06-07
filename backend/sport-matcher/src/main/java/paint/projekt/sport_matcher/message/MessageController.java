@@ -3,19 +3,22 @@ package paint.projekt.sport_matcher.message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.security.UserPrincipal;
+
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path="/api/messages")
+@RequestMapping(path = "/api/messages")
 public class MessageController {
 
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageCreationRequest messageCreationRequest) {
-        MessageDTO createdMessage = messageService.createMessage(messageCreationRequest);
+    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageCreationRequest messageCreationRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        MessageDTO createdMessage = messageService.createMessage(messageCreationRequest, userPrincipal);
         return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
     }
 

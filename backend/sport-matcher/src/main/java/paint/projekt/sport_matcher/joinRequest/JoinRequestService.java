@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import paint.projekt.sport_matcher.ad.Ad;
 import paint.projekt.sport_matcher.ad.AdRepository;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
 
@@ -27,8 +28,8 @@ public class JoinRequestService {
                 .build();
     }
 
-    public JoinRequestDTO createJoinRequest(JoinRequestCreationRequest joinRequestCreationRequest) {
-        Long userId = 1L;
+    public JoinRequestDTO createJoinRequest(JoinRequestCreationRequest joinRequestCreationRequest, UserPrincipal userPrincipal) {
+        Long userId = userPrincipal.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 

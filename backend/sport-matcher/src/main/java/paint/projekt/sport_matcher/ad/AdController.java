@@ -3,7 +3,9 @@ package paint.projekt.sport_matcher.ad;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class AdController {
 
     // TODO create separate AddAdRequest records
     @PostMapping
-    public ResponseEntity<AdDTO> createAd(@RequestBody AdCreationRequest adCreateRequest) {
-        AdDTO createdAd = adService.createAd(adCreateRequest, 1L);
+    public ResponseEntity<AdDTO> createAd(@RequestBody AdCreationRequest adCreateRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        AdDTO createdAd = adService.createAd(adCreateRequest, userPrincipal);
         return new ResponseEntity<>(createdAd, HttpStatus.CREATED);
     }
 
