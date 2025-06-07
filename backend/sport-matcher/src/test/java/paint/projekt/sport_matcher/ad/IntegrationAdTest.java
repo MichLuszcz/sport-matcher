@@ -32,7 +32,7 @@ import static paint.projekt.sport_matcher.utils.UrlBuilder.buildUrl;
 class IntegrationAdTest {
 
     @LocalServerPort
-    private int port = 3306;
+    private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
