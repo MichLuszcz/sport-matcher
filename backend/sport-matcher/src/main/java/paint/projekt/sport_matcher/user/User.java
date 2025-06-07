@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Encja reprezentująca konto użytkownika aplikacji.
- *
+ * <p>
  * Pola użytkownika:
  * id – identyfikator użytkownika
  * username – unikalna nazwa użytkownika
@@ -22,7 +22,7 @@ import java.util.List;
  * dateCreated - data utworzenia konta
  * isActive - status aktywności konta (true - istnieje, false - nie, np usunięte)
  * role - rola użytkownika (ROLE_USER/ROLE_ADMIN)
- *
+ * <p>
  * prePersist() - automatycznie ustawia datę i czas utworzenia konta na bieżący czas.
  */
 
@@ -58,7 +58,7 @@ public class User {
   @Column
   private Boolean isActive;
 
-  private String role;
+  private UserRole role;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Ad> ads;
@@ -69,7 +69,7 @@ public class User {
   @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
   private List<Message> receivedMessages;
 
-  public User(String username, String email, String password, String name, String role, Boolean isActive) {
+  public User(String username, String email, String password, String name, UserRole role, Boolean isActive) {
         this.username = username;
         this.email = email;
         this.name = name;

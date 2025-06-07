@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final String DEFAULT_ROLE = "ROLE_USER";
+    private static final UserRole DEFAULT_ROLE = UserRole.USER;
     // private final PasswordEncoder passwordEncoder; // Inject password encoder
 
     private UserDTO convertToDto(User user) {
@@ -23,7 +23,7 @@ public class UserService {
                 .name(user.getName())
                 .dateCreated(user.getDateCreated())
                 .email(user.getEmail())
-                .role(user.getRole())
+                .role(user.getRole().toString())
                 .isActive(user.getIsActive())
                 .build();
     }

@@ -14,6 +14,7 @@ import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.sportType.SportTypeRepository;
 import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
+import paint.projekt.sport_matcher.user.UserRole;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -64,16 +65,16 @@ public class DummyData {
      */
     public void addDummyData() {
         // 1. Create and save User entities
-        user_john = new User("john_doe", "john.doe@example.com", "password123", "John Doe", "ROLE_USER", true);
+        user_john = new User("john_doe", "john.doe@example.com", "password123", "John Doe", UserRole.USER, true);
         user_john = userRepository.save(user_john);
 
-        user_jane = new User("jane_smith", "jane.smith@example.com", "securepass", "Jane Smith", "ROLE_USER", true);
+        user_jane = new User("jane_smith", "jane.smith@example.com", "securepass", "Jane Smith", UserRole.USER, true);
         user_jane = userRepository.save(user_jane);
 
-        user_mike = new User("mike_wazowski", "mike.wazowski@example.com", "mike123", "Mike Wazowski", "ROLE_USER", true);
+        user_mike = new User("mike_wazowski", "mike.wazowski@example.com", "mike123", "Mike Wazowski", UserRole.USER, true);
         user_mike = userRepository.save(user_mike);
 
-        admin_alice = new User("admin_alice", "admin.alice@example.com", "adminpass", "Alice Admin", "ROLE_ADMIN", true);
+        admin_alice = new User("admin_alice", "admin.alice@example.com", "adminpass", "Alice Admin", UserRole.ADMIN, true);
         admin_alice = userRepository.save(admin_alice);
 
 
