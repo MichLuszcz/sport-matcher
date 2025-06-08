@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./AdForm.css";
+import {useNavigate} from "react-router-dom";
 
 export default function AdForm() {
   const [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ export default function AdForm() {
   const [dateEnd, setDateEnd] = useState("");
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,11 +31,11 @@ export default function AdForm() {
     };
 
     console.log("Submitting ad:", adData);
-    // todo send submitted ad to POST /api/ads
+    // todo send submitted ad to /api/ads
 
     // backend
     // po sukcesie:
-    // navigate("/ads");
+    navigate("/ads");
   };
 
   return (
