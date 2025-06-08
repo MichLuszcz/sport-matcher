@@ -1,0 +1,98 @@
+.adpage-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  color: white;
+}
+
+.adpage-back-button {
+  margin-bottom: 2rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #1f1f1f;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.adpage-back-button:hover {
+  border-color: #646cff;
+  background-color: #1f1f1f;
+}
+
+.adpage-card {
+  background-color: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adpage-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.adpage-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+  color: #999;
+  margin-bottom: 1rem;
+}
+
+.adpage-description {
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+.adpage-info {
+  font-size: 0.95rem;
+  color: #bbb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.adpage-info strong {
+  color: white;
+}
+
+.adpage-footer {
+  font-size: 0.9rem;
+  color: #aaa;
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+}
+
+.adpage-join-button {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.05rem;
+  background-color: #1f1f1f;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  width: 100%;
+}
+
+.adpage-join-button:hover {
+  border-color: #646cff;
+  background-color: #1f1f1f;
+}
+
+.user-icon {
+  width: 18px;
+  height: 18px;
+  filter: invert(70%);
+}
