@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdList.css";
 
@@ -21,7 +21,7 @@ type Ad = {
 
 export default function AdList() {
   const navigate = useNavigate();
-  const [ads, /*setAds*/] = useState<Ad[]>([
+  const [ads, setAds] = useState<Ad[]>([
     
   ]);
 
@@ -71,6 +71,22 @@ export default function AdList() {
     setTime("");
     setSearch("");
   };
+
+  async function fetchData() {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ads`);
+      const result: Ad[] = await response.json();
+      setAds(result)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("An error occured while fetching ads:\n" + error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  })
 
   return (
     <div className="adlist-container">
