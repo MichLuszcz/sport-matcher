@@ -2,10 +2,13 @@ package paint.projekt.sport_matcher.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.ad.Ad;
+import paint.projekt.sport_matcher.exceptions.ForbiddenException;
 import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,5 +67,18 @@ public class MessageService {
         return messageRepository.findAllByReceiverId(receiverId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteMessage(Long id, UserPrincipal userPrincipal) {
+        Optional<Message> maybeMessage = messageRepository.findById(id);
+        if (maybeMessage.isEmpty()){
+            return;
+        }
+        Message message = maybeMessage.get();
+
+        if (!userPrincipal.getUserId().equals(message.getSender().getId()) && !userPrincipal.isAdmin()) {
+            throw (new ForbiddenException("You are not permitted to delete this ad"));
+        }
+        messageRepository.delete(message);
     }
 }

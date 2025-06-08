@@ -42,4 +42,10 @@ public class MessageController {
     public @ResponseBody List<MessageDTO> getMessagesByReceiverId(@PathVariable Long receiverId) {
         return messageService.getMessagesByReceiverId(receiverId);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> deleteMessage(@PathVariable Long id,  @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        messageService.deleteMessage(id, userPrincipal);
+        return ResponseEntity.ok().build();
+    }
 }
