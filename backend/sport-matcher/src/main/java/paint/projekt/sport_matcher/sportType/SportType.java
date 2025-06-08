@@ -1,12 +1,10 @@
 package paint.projekt.sport_matcher.sportType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
 import paint.projekt.sport_matcher.ad.Ad;
+
 import java.util.List;
 
 /**
@@ -31,6 +29,7 @@ public class SportType {
 
   @Column(nullable = false, unique = true, length = 50)
   private String name;
+
 
   @OneToMany(mappedBy = "sportType")
   private List<Ad> ads;

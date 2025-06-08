@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://sport-matcher:3306/sport_matcher?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+
+security:
+  jwt:
+    secret-key: "not-the-production-key"
+app:
+  website-base-url: "http://localhost:8080"

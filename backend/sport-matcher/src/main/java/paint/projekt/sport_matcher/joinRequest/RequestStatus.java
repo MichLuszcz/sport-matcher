@@ -1,4 +1,4 @@
-package paint.projekt.sport_matcher.adRequest;
+package paint.projekt.sport_matcher.joinRequest;
 
 public enum RequestStatus {
     PENDING,

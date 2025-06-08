@@ -1,9 +1,9 @@
 services:
   mysql:
-    container_name: 'paint-database'
+    container_name: 'sport-matcher'
     image: 'mysql:latest'
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_DATABASE=sport_matcher'
       - 'MYSQL_PASSWORD=secret'
       - 'MYSQL_ROOT_PASSWORD=verysecret'
       - 'MYSQL_USER=myuser'

@@ -2,9 +2,9 @@ spring:
   application:
     name: sport-matcher
   datasource:
-    url: jdbc:mysql://localhost:3306/sport_matcher?useSSL=false&serverTimezone=UTC
-    username: root
-    password: root
+    url: jdbc:mysql://localhost:3306/sport_matcher?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: myuser
+    password: secret
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
@@ -13,3 +13,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+app:
+  delete-tokens-cron-expression: "0 0 0 * * *" # Every day at midnight
+#  confirm-email-url: "/users/verify/"
+#  reset-password-url: "/users/reset-password/"
+security:
+  jwt:
+    valid-for-seconds: 3600
+#logging:
+#  level:
+#    org.springframework: TRACE
