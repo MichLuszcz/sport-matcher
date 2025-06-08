@@ -7,6 +7,7 @@ export default function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -31,10 +32,10 @@ export default function Login() {
       navigate("/ads");
     } else {
       const errorText = await response.text();
-      alert("Login failed: " + errorText);
+      setMessage("Login failed: " + errorText);
     }
   } catch (err) {
-    alert("Unable to connect to the server.");
+    setMessage("Unable to connect to the server.");
   }
 };
 
