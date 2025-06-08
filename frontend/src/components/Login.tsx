@@ -11,6 +11,7 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+   console.log("Form submitted with:", usernameOrEmail, password); // DEBUG
 
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
@@ -19,7 +20,7 @@ export default function Login() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username: usernameOrEmail,
+        email: usernameOrEmail,
         password: password
       })
     });
@@ -59,6 +60,7 @@ export default function Login() {
           />
           <button type="submit" className="header-button">Sign in</button>
         </form>
+        {message && <p style={{ color: "red", marginTop: "10px" }}>{message}</p>}
       </div>
     </div>
   );
