@@ -2,6 +2,7 @@ package paint.projekt.sport_matcher.utils;
 
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import paint.projekt.sport_matcher.joinRequest.JoinRequest;
 import paint.projekt.sport_matcher.ad.Ad;
@@ -34,6 +35,7 @@ public class DummyData {
     private final JoinRequestRepository joinRequestRepository;
     private final MessageRepository messageRepository;
     private final SportTypeRepository sportTypeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // Public fields to hold references to the created dummy data entities
     public User user_john;
@@ -65,16 +67,16 @@ public class DummyData {
      */
     public void addDummyData() {
         // 1. Create and save User entities
-        user_john = new User("john_doe", "john.doe@example.com", "password123", "John Doe", UserRole.USER, true);
+        user_john = new User("john_doe", "john.doe@example.com", passwordEncoder.encode("password123"), "John Doe", UserRole.USER, true);
         user_john = userRepository.save(user_john);
 
-        user_jane = new User("jane_smith", "jane.smith@example.com", "securepass", "Jane Smith", UserRole.USER, true);
+        user_jane = new User("jane_smith", "jane.smith@example.com", passwordEncoder.encode("securepass"), "Jane Smith", UserRole.USER, true);
         user_jane = userRepository.save(user_jane);
 
-        user_mike = new User("mike_wazowski", "mike.wazowski@example.com", "mike123", "Mike Wazowski", UserRole.USER, true);
+        user_mike = new User("mike_wazowski", "mike.wazowski@example.com", passwordEncoder.encode("mike123"), "Mike Wazowski", UserRole.USER, true);
         user_mike = userRepository.save(user_mike);
 
-        admin_alice = new User("admin_alice", "admin.alice@example.com", "adminpass", "Alice Admin", UserRole.ADMIN, true);
+        admin_alice = new User("admin_alice", "admin.alice@example.com", passwordEncoder.encode("adminpass"), "Alice Admin", UserRole.ADMIN, true);
         admin_alice = userRepository.save(admin_alice);
 
 
