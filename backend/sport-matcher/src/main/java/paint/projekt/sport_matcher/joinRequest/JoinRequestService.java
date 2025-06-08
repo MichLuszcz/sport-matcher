@@ -32,6 +32,14 @@ public class JoinRequestService {
                 .build();
     }
 
+    private JoinRequest expectJoinRequestExists(Long id) {
+        Optional<JoinRequest> maybeJoinRequest = joinRequestRepository.findById(id);
+        if (maybeJoinRequest.isEmpty()) {
+            throw new NotFoundException("Join request not found with id: " + id);
+        }
+        return maybeJoinRequest.get();
+    }
+
     public JoinRequestDTO createJoinRequest(JoinRequestCreationRequest joinRequestCreationRequest, UserPrincipal userPrincipal) {
         Long userId = userPrincipal.getUserId();
         User user = userRepository.findById(userId)
@@ -76,18 +84,14 @@ public class JoinRequestService {
 
     /**
      * Accept a join request to one of the ads posted by the user sending the accept request.
-     * @param id JoinRequest Id
+     *
+     * @param id            JoinRequest Id
      * @param userPrincipal logged in user data
      * @return the request after alteration
      */
     public JoinRequestDTO alterJoinRequestStatus(Long id, UserPrincipal userPrincipal, RequestStatus requestStatus) {
 
-        Optional<JoinRequest> maybeJoinRequest = joinRequestRepository.findById(id);
-        if (maybeJoinRequest.isEmpty()) {
-            throw new NotFoundException("Join request not found with id: " + id);
-        }
-
-        var joinRequest = maybeJoinRequest.get();
+        var joinRequest = expectJoinRequestExists(id);
         if (!joinRequest.getAd().getUser().getId().equals(userPrincipal.getUserId())) {
             throw new ForbiddenException("Cannot alter request to other user's ad");
         }
@@ -99,4 +103,19 @@ public class JoinRequestService {
         return convertToDto(joinRequest);
     }
 
+    public void deleteJoinRequest(Long id, UserPrincipal userPrincipal) {
+        // permitted for: admin, the user who created the request
+        Optional<JoinRequest> maybeJoinRequest = joinRequestRepository.findById(id);
+        if (maybeJoinRequest.isEmpty()) {
+            return;
+        }
+        var joinRequest = maybeJoinRequest.get();
+        if (!joinRequest.getUser().getId().equals(userPrincipal.getUserId()) && !userPrincipal.isAdmin()) {
+            throw new ForbiddenException("Cannot delete other user's request");
+        }
+
+
+        joinRequestRepository.delete(joinRequest);
+
+    }
 }

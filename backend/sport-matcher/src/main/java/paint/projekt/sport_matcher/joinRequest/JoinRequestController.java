@@ -56,5 +56,10 @@ public class JoinRequestController {
         return ResponseEntity.ok(rejected_request);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<JoinRequestDTO> deleteJoinRequest(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        joinRequestService.deleteJoinRequest(id, userPrincipal);
+        return ResponseEntity.ok().build();
+    }
 
 }
