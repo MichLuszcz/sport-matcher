@@ -3,6 +3,7 @@ package paint.projekt.sport_matcher.message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import paint.projekt.sport_matcher.exceptions.ForbiddenException;
+import paint.projekt.sport_matcher.exceptions.NotFoundException;
 import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
@@ -44,10 +45,16 @@ public class MessageService {
         return convertToDto(savedMessage);
     }
 
-    public MessageDTO getMessageById(Long id) {
-        return messageRepository.findById(id)
-                .map(this::convertToDto)
-                .orElse(null);
+    public MessageDTO getMessageById(Long id, UserPrincipal userPrincipal) {
+        var maybeMessage = messageRepository.findById(id);
+        if (maybeMessage.isEmpty()){
+            throw new NotFoundException("Message not found with id " + id);
+        }
+        var message = maybeMessage.get();
+        if (!message.getSender().getId().equals(userPrincipal.getUserId()) && !message.getReceiver().getId().equals(userPrincipal.getUserId())) {
+            throw new ForbiddenException("User not authorized to view this message");
+        }
+        return convertToDto(message);
     }
 
     public List<MessageDTO> getMessagesBySenderId(Long senderId, UserPrincipal userPrincipal) {

@@ -10,7 +10,7 @@
 
 
 ## Running locally:
-`./gradlew bootRun`
+`./gradlew bootRun --args='--spring.profiles.active=dev'`
 
 You can run the database separately with 
 `docker compose up`

@@ -18,6 +18,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import paint.projekt.sport_matcher.SportMatcherApplication;
+import paint.projekt.sport_matcher.security.AuthService;
 import paint.projekt.sport_matcher.user.UserRepository;
 import paint.projekt.sport_matcher.sportType.SportTypeRepository;
 import paint.projekt.sport_matcher.utils.DummyData;
@@ -54,7 +55,8 @@ class IntegrationAdTest {
 
     @Autowired
     private SportTypeRepository sportTypeRepository;
-
+    @Autowired
+    private AuthService authService;
     @Autowired
     private AdRepository adRepository;
     HttpHeaders headers = new HttpHeaders();
@@ -63,8 +65,9 @@ class IntegrationAdTest {
     public void setupDatabase() {
         data.deleteAll();
         data.addDummyData();
-        adRepository.deleteAll(); // Clear ads to ensure a clean state for each test
         headers.clear();
+        var token = authService.attemptLogin(data.user_john.getUsername(), "password123").getAccessToken();
+        headers.add("Authorization", "Bearer " + token);
     }
 
     @Container
@@ -110,15 +113,14 @@ class IntegrationAdTest {
                 new HttpEntity<>(headers),
                 String.class
         );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         var json = JsonPath.parse(response.getBody());
         List<Map<String, Object>> ads = json.read("$");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(2, ads.size());
+        assertEquals(4, ads.size());
 
-        assertTrue(ads.get(0).get("title").toString().contains("Ad1"));
-//        assertTrue(titles.contains("Ad 1"));
-//        assertTrue(titles.contains("Ad 2"));
+        assertTrue(ads.get(0).get("title").toString().contains("5-a-side Football Match Needed!"));
     }
 
     @Test
