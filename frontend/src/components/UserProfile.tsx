@@ -27,31 +27,6 @@ export default function UserProfile() {
 
   useEffect(() => {
     // backend
-    const mockUser: User = {
-      id: 1,
-      username: "jan88",
-      email: "jan@example.com",
-      name: "Jan Kowalski",
-      dateCreated: "2025-04-01T10:00:00",
-      isActive: true,
-      role: "USER",
-      ads: [
-        {
-          id: 101,
-          title: "Tennis Doubles",
-          eventDateTime: "2025-06-15T18:00:00",
-          location: "Court A",
-        },
-        {
-          id: 102,
-          title: "Morning Jog",
-          eventDateTime: "2025-06-18T07:00:00",
-          location: "Park Centralny",
-        },
-      ],
-    };
-
-    setUser(mockUser);
   }, []);
 
   const handleLogout = () => {

@@ -21,56 +21,8 @@ type Ad = {
 
 export default function AdList() {
   const navigate = useNavigate();
-  // przykładowe
   const [ads, setAds] = useState<Ad[]>([
-    {
-      id: 1,
-      title: "Ad 1",
-      description: "Description 1",
-      location: "Location 1",
-      eventDateTime: "2025-06-10T18:00:00",
-      maxParticipants: 10,
-      sportType: {
-        id: 1,
-        name: "Football",
-      },
-      user: {
-        id: 1,
-        username: "author1",
-      },
-    },
-    {
-      id: 2,
-      title: "Ad 2",
-      description: "Description 2",
-      location: "Location 2",
-      eventDateTime: "2025-06-10T18:00:00",
-      maxParticipants: 10,
-      sportType: {
-        id: 1,
-        name: "Football",
-      },
-      user: {
-        id: 1,
-        username: "author2",
-      },
-    },
-    {
-      id: 3,
-      title: "Ad 3",
-      description: "Description 3",
-      location: "Location 3",
-      eventDateTime: "2025-06-10T18:00:00",
-      maxParticipants: 10,
-      sportType: {
-        id: 1,
-        name: "Football",
-      },
-      user: {
-        id: 1,
-        username: "author3",
-      },
-    },
+    
   ]);
 
   const [sport, setSport] = useState("");
