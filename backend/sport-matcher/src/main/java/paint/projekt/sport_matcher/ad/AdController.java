@@ -16,7 +16,6 @@ public class AdController {
 
     private final AdService adService;
 
-    // TODO create separate AddAdRequest records
     @PostMapping
     public ResponseEntity<AdDTO> createAd(@RequestBody AdCreationRequest adCreateRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         AdDTO createdAd = adService.createAd(adCreateRequest, userPrincipal);
@@ -40,5 +39,11 @@ public class AdController {
     @GetMapping("/user/{userId}")
     public @ResponseBody List<AdDTO> getAdsByUserId(@PathVariable Long userId) {
         return adService.getAdsByUserId(userId);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<AdDTO> deleteAdById(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        adService.deleteAdById(id, userPrincipal);
+        return ResponseEntity.noContent().build();
     }
 }

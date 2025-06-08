@@ -54,9 +54,8 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
-//    // TODO refactor other code to use this
-//    public boolean isAdmin() {
-//        return this.getAuthorities()
-//                .contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//    }
+    public boolean isAdmin() {
+        return this.getAuthorities()
+                .contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
 }

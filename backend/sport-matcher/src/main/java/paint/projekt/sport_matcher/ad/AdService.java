@@ -1,7 +1,10 @@
 package paint.projekt.sport_matcher.ad;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.web.oauth2.resourceserver.OpaqueTokenDsl;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.exceptions.ForbiddenException;
 import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.sportType.SportTypeRepository;
@@ -9,7 +12,9 @@ import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserNotFoundException;
 import paint.projekt.sport_matcher.user.UserRepository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,5 +87,24 @@ public class AdService {
         return adRepository.findByUserId(userId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteAdById(Long id, UserPrincipal userPrincipal) {
+        Optional<Ad> maybeAd = adRepository.findById(id);
+        if (maybeAd.isEmpty()){
+            return;
+        }
+        Ad ad = maybeAd.get();
+        Optional<User> maybeUser =  userRepository.findById(userPrincipal.getUserId());
+        if (maybeUser.isEmpty()) {
+            return;
+        }
+        User user = maybeUser.get();
+
+        if (!user.getId().equals(ad.getUser().getId()) && !userPrincipal.isAdmin()) {
+            throw (new ForbiddenException("You are not permitted to delete this ad"));
+        }
+
+        adRepository.delete(ad);
     }
 }
