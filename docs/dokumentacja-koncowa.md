@@ -108,7 +108,7 @@ oraz createdAt. Metoda prePersist automatycznie ustawia datę wysłania prośby.
 
 Interfejs do innych modułów:
 
-JoinRequestController: Udostępnia punkty końcowe API do zarządzania zgłoszeniami dołączenia.
+`JoinRequestController`: Udostępnia punkty końcowe API do zarządzania zgłoszeniami dołączenia.
 
 - `POST /api/ads/{adId}/join-requests`: Tworzy nowe zgłoszenie dołączenia do ogłoszenia.
 - `GET /api/join-requests`: Pobiera listę wszystkich zgłoszeń dołączenia.
