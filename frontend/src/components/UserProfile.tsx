@@ -23,7 +23,7 @@ type User = {
 export default function UserProfile() {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | null>(null);
+  const [user, /*setUser*/] = useState<User | null>(null);
 
   useEffect(() => {
     // backend

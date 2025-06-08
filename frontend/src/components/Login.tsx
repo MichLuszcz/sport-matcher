@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageSlideshow from "../ImageSlideshow";
-import './SignForm.css';
+import "./SignForm.css";
 
 export default function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -9,36 +9,40 @@ export default function Login() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-   console.log("Form submitted with:", usernameOrEmail, password); // DEBUG
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log("Form submitted with:", usernameOrEmail, password); // DEBUG
 
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: usernameOrEmail,
-        password: password
-      })
-    });
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: usernameOrEmail,
+          password: password,
+        }),
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      const token = data.accessToken;
+      if (response.ok) {
+        // Give this a TypeScript type for type safety
+        const data = await response.json();
+        const token = data.accessToken;
 
-      localStorage.setItem("accessToken", token);
-      navigate("/ads");
-    } else {
-      const errorText = await response.text();
-      setMessage("Login failed: " + errorText);
+        localStorage.setItem("accessToken", token);
+        navigate("/ads");
+      } else {
+        const errorText = await response.text();
+        setMessage("Login failed: " + errorText);
+      }
+    } catch (error) {
+      setMessage("Unable to connect to the server.");
+      if (error instanceof Error) {
+        console.error("An error occured while logging in:\n" + error);
+      }
     }
-  } catch (err) {
-    setMessage("Unable to connect to the server.");
-  }
-};
+  };
 
   return (
     <div className="fullscreen">
@@ -58,9 +62,13 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="header-button">Sign in</button>
+          <button type="submit" className="header-button">
+            Sign in
+          </button>
         </form>
-        {message && <p style={{ color: "red", marginTop: "10px" }}>{message}</p>}
+        {(() => {
+          if (message) return <p style={{ color: "red", marginTop: "10px" }}>{message}</p>;
+        })()}
       </div>
     </div>
   );

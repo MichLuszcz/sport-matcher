@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./AdPage.css";
 
-type Ad = {
+interface Ad {
   id: number;
   title: string;
   description: string;
@@ -23,7 +23,7 @@ type Ad = {
 export default function AdPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [ad, setAd] = useState<Ad | null>(null);
+  const [ad, /*setAd*/] = useState<Ad | null>(null);
 
   useEffect(() => {
     // backend

@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import "./AdForm.css";
 
 export default function AdForm() {
-  const navigate = useNavigate();
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [sportTypeId, setSportTypeId] = useState("");
@@ -15,8 +13,8 @@ export default function AdForm() {
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
     const adData = {
       title,
@@ -39,34 +37,27 @@ export default function AdForm() {
   return (
     <div className="form-container">
       <h2>Create New Sport Ad</h2>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          maxWidth: "500px",
-        }}
-      >
+      <form onSubmit={handleSubmit} className="ad-form">
+        <label htmlFor="ad-title">Ad title</label>
         <input
           type="text"
+          id="ad-title"
           placeholder="Ad title"
           value={title}
           required
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(event) => setTitle(event.target.value)}
         />
 
+        <label htmlFor="description">Description (optional)</label>
         <textarea
-          placeholder="Description (optional)"
+          placeholder="Enter description here..."
+          id="description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(event) => setDescription(event.target.value)}
         />
 
-        <select
-          value={sportTypeId}
-          required
-          onChange={(e) => setSportTypeId(e.target.value)}
-        >
+        <label htmlFor="sport-type">Sport type:</label>
+        <select id="sport-type" value={sportTypeId} required onChange={(event) => setSportTypeId(event.target.value)}>
           <option value="">Select sport</option>
           <option value="1">Football</option>
           <option value="2">Basketball</option>
@@ -74,54 +65,38 @@ export default function AdForm() {
           {/* backend */}
         </select>
 
+      <label htmlFor="location">Location:</label>
         <input
           type="text"
+          id="location"
           placeholder="Location"
           value={location}
           required
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={(event) => setLocation(event.target.value)}
         />
 
+
+        <label htmlFor="number-of-participants">Number of participants</label>
         <input
           type="number"
-          placeholder="Number of participants"
+          id="number-of-participants"
           value={participants}
           min={1}
           required
-          onChange={(e) => setParticipants(parseInt(e.target.value))}
+          onChange={(event) => setParticipants(parseInt(event.target.value))}
         />
 
         <label>Start Date:</label>
-        <input
-          type="date"
-          value={dateStart}
-          required
-          onChange={(e) => setDateStart(e.target.value)}
-        />
+        <input type="date" value={dateStart} required onChange={(event) => setDateStart(event.target.value)} />
 
         <label>End Date:</label>
-        <input
-          type="date"
-          value={dateEnd}
-          required
-          onChange={(e) => setDateEnd(e.target.value)}
-        />
+        <input type="date" value={dateEnd} required onChange={(event) => setDateEnd(event.target.value)} />
 
         <label>Start Time:</label>
-        <input
-          type="time"
-          value={timeStart}
-          required
-          onChange={(e) => setTimeStart(e.target.value)}
-        />
+        <input type="time" value={timeStart} required onChange={(event) => setTimeStart(event.target.value)} />
 
         <label>End Time:</label>
-        <input
-          type="time"
-          value={timeEnd}
-          required
-          onChange={(e) => setTimeEnd(e.target.value)}
-        />
+        <input type="time" value={timeEnd} required onChange={(event) => setTimeEnd(event.target.value)} />
 
         <button type="submit">Publish</button>
       </form>

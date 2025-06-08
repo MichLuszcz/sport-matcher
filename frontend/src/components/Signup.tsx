@@ -17,9 +17,9 @@ export default function Signup() {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, name, email, password })
+        body: JSON.stringify({ username, name, email, password }),
       });
 
       if (response.ok) {
@@ -29,8 +29,11 @@ export default function Signup() {
         const errorText = await response.text();
         setMessage("Registration failed: " + errorText);
       }
-    } catch (err) {
+    } catch (error) {
       setMessage("Unable to connect to the server.");
+      if (error instanceof Error) {
+        console.error("An error occured while signing up:\n" + error);
+      }
     }
   };
 
@@ -40,29 +43,14 @@ export default function Signup() {
       <div className="auth-box">
         <h2>Sign up to Sports Matcher</h2>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <input type="text" placeholder="Name" value={name} onChange={(event) => setName(event.target.value)} />
+          <input type="text" placeholder="Username" value={username} onChange={(event) => setUsername(event.target.value)} />
+          <input type="email" placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)} />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
           />
           <button type="submit">Sign up</button>
         </form>

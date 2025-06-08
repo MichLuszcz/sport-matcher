@@ -21,7 +21,7 @@ type Ad = {
 
 export default function AdList() {
   const navigate = useNavigate();
-  const [ads, setAds] = useState<Ad[]>([
+  const [ads, /*setAds*/] = useState<Ad[]>([
     
   ]);
 
