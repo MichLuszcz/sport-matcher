@@ -29,6 +29,8 @@ export default function AdForm() {
     };
 
     console.log("Submitting ad:", adData);
+    // todo send submitted ad to POST /api/ads
+
     // backend
     // po sukcesie:
     // navigate("/ads");
