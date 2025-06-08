@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ConfigurationProperties("app")
 public class AppConfiguration {
     private String deleteTokensCronExpression;
-    private String websiteBaseUrl;
+    private String websiteBaseUrl = "http://localhost:5173";
 //    private String confirmEmailUrl;
 //    private String resetPasswordUrl;
 }
