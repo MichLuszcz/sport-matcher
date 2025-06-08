@@ -15,7 +15,7 @@ export default function AdForm() {
   const [timeEnd, setTimeEnd] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const adData = {
@@ -31,11 +31,35 @@ export default function AdForm() {
     };
 
     console.log("Submitting ad:", adData);
-    // todo send submitted ad to /api/ads
+    // todo send submitted ad to POST /api/ads
 
     // backend
     // po sukcesie:
-    navigate("/ads");
+    // navigate("/ads");
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ads`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(adData),
+      });
+
+      if (response.ok) {
+        // TODO
+      } else {
+        const errorText = await response.text();
+        console.error("Login failed: " + errorText);
+      }
+    } catch (error) {
+      console.error("Unable to connect to the server.");
+      if (error instanceof Error) {
+        console.error("An error occured while logging in:\n" + error);
+      }
+    }
+
   };
 
   return (
