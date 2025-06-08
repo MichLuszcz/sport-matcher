@@ -9,10 +9,34 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    //backend
-    navigate("/ads");
-  };
+  e.preventDefault();
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: usernameOrEmail,
+        password: password
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const token = data.accessToken;
+
+      localStorage.setItem("accessToken", token);
+      navigate("/ads");
+    } else {
+      const errorText = await response.text();
+      alert("Login failed: " + errorText);
+    }
+  } catch (err) {
+    alert("Unable to connect to the server.");
+  }
+};
 
   return (
     <div className="fullscreen">
