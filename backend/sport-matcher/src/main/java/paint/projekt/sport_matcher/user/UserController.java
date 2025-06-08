@@ -1,31 +1,50 @@
 package paint.projekt.sport_matcher.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 
-@RestController // This means that this class is a Controller
+import java.util.List;
+
+
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
+@RequestMapping(path = "/api/users")
 public class UserController {
-  @Autowired
-  private UserRepository userRepository;
-  private final UserSerivce userService;
 
-  @PostMapping(path="/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser (@RequestParam String name
-      , @RequestParam String email) {
+    private final UserService userService;
 
-    User n = new User();
-    n.setName(name);
-    n.setEmail(email);
-    userRepository.save(n);
-    return "Saved";
-  }
+    @PostMapping()
+    public UserDTO registerNewUser(@RequestBody RegisterRequest request) {
+//        return addLinks(
+        return userService.registerNewUser(request);
+//        );
+    }
 
-  @GetMapping(path="/all")
-  public @ResponseBody Iterable<UserDTO> getAllUsers() {
-    // This returns a JSON or XML with the users
-    return userService.getAllUsers();
-  }
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO userDTO = userService.getUserById(id);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        var users = userService.getAllUsers();
+        if (!users.isEmpty()) {
+            return ResponseEntity.ok(users);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long id) {
+        userService.deleteUser(id, principal);
+        return ResponseEntity.noContent().build();
+    }
+
 }

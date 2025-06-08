@@ -1,31 +1,46 @@
 package paint.projekt.sport_matcher.message;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 
-@RestController // This means that this class is a Controller
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
-public class UserController {
-  @Autowired
-  private UserRepository userRepository;
-  private final UserSerivce userService;
+@RequestMapping(path = "/api")
+public class MessageController {
 
-  @PostMapping(path="/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser (@RequestParam String name
-      , @RequestParam String email) {
+    private final MessageService messageService;
 
-    User n = new User();
-    n.setName(name);
-    n.setEmail(email);
-    userRepository.save(n);
-    return "Saved";
-  }
+    @PostMapping("/messages")
+    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageCreationRequest messageCreationRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        MessageDTO createdMessage = messageService.createMessage(messageCreationRequest, userPrincipal);
+        return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
+    }
 
-  @GetMapping(path="/all")
-  public @ResponseBody Iterable<UserDTO> getAllUsers() {
-    // This returns a JSON or XML with the users
-    return userService.getAllUsers();
-  }
+    @GetMapping("/messages/{id}")
+    public ResponseEntity<MessageDTO> getMessage(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        MessageDTO dto = messageService.getMessageById(id, userPrincipal);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/users/{userId}/messages/sent")
+    public @ResponseBody List<MessageDTO> getMessagesBySenderId(@PathVariable Long userId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return messageService.getMessagesBySenderId(userId, userPrincipal);
+    }
+
+    @GetMapping("/users/{userId}/messages/received")
+    public @ResponseBody List<MessageDTO> getMessagesByReceiverId(@PathVariable Long userId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return messageService.getMessagesByReceiverId(userId, userPrincipal);
+    }
+
+    @DeleteMapping("/messages/{id}")
+    public ResponseEntity<MessageDTO> deleteMessage(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        messageService.deleteMessage(id, userPrincipal);
+        return ResponseEntity.ok().build();
+    }
 }

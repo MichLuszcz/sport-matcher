@@ -1,13 +1,11 @@
 package paint.projekt.sport_matcher.ad;
+import paint.projekt.sport_matcher.joinRequest.JoinRequest;
 import paint.projekt.sport_matcher.sportType.SportType;
 import paint.projekt.sport_matcher.user.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
 
 
 import java.time.LocalDateTime;
@@ -83,6 +81,10 @@ public class Ad {
 
   @Column(name = "creation_datetime")
   private LocalDateTime creationDatetime;
+
+  @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Column
+  private List<JoinRequest> joinRequests;
 
   @PrePersist
   public void prePersist() {

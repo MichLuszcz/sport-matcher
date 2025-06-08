@@ -1,0 +1,19 @@
+services:
+  backend:
+    container_name: paint-backend
+    depends_on:
+      - mysql
+    build:
+      context: ../backend/sport-matcher
+    ports:
+      - "8080:8080"
+  mysql:
+    container_name: sport-matcher
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=sport_matcher'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+    ports:
+      - '3306:3306'

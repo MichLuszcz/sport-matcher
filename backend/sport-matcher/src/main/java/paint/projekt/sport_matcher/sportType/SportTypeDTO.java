@@ -10,10 +10,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Setter
 @AllArgsConstructor
 @Builder
-public class UserDTO extends RepresentationModel<UserDTO> {
+public class SportTypeDTO extends RepresentationModel<SportTypeDTO> {
     private Long id;
-    private String username;
-    private String email;
-    private String role;
-    private Boolean enabled;
+    private String name;
 }

@@ -1,10 +1,13 @@
 package paint.projekt.sport_matcher.message;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
-// CRUD refers Create, Read, Update, Delete
+import java.util.Collection;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+@Repository
+public interface MessageRepository extends JpaRepository<Message, Long> {
+    Collection<Message> findAllBySenderId(Long senderId);
 
+    Collection<Message> findAllByReceiverId(Long receiverId);
 }
