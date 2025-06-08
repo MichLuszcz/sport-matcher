@@ -16,7 +16,7 @@ public class JoinRequestController {
 
     private final JoinRequestService joinRequestService;
 
-    // todo verify user with principal
+    //maybe change to path variable
     @PostMapping
     public ResponseEntity<JoinRequestDTO> createAdRequest(@RequestBody JoinRequestCreationRequest joinRequestCreationRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         JoinRequestDTO createdAdRequest = joinRequestService.createJoinRequest(joinRequestCreationRequest, userPrincipal);
@@ -34,13 +34,27 @@ public class JoinRequestController {
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public @ResponseBody List<JoinRequestDTO> getAdRequestsByUserId(@PathVariable Long userId) {
         return joinRequestService.getJoinRequestsByUserId(userId);
     }
 
-    @GetMapping("/ad/{adId}")
+    @GetMapping("/ads/{adId}")
     public @ResponseBody List<JoinRequestDTO> getAdRequestsByAdId(@PathVariable Long adId) {
         return joinRequestService.getJoinRequestsByAdId(adId);
     }
+
+    @PutMapping("/{id}/accept")
+    public ResponseEntity<JoinRequestDTO> acceptJoinRequest(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        var accepted_request = joinRequestService.alterJoinRequestStatus(id, userPrincipal, RequestStatus.ACCEPTED);
+        return ResponseEntity.ok(accepted_request);
+    }
+
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<JoinRequestDTO> rejectJoinRequest(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        var rejected_request = joinRequestService.alterJoinRequestStatus(id, userPrincipal, RequestStatus.REJECTED);
+        return ResponseEntity.ok(rejected_request);
+    }
+
+
 }

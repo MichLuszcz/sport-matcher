@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import paint.projekt.sport_matcher.ad.Ad;
 import paint.projekt.sport_matcher.ad.AdRepository;
+import paint.projekt.sport_matcher.exceptions.BadRequestException;
+import paint.projekt.sport_matcher.exceptions.ForbiddenException;
+import paint.projekt.sport_matcher.exceptions.NotFoundException;
 import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.user.User;
 import paint.projekt.sport_matcher.user.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +39,8 @@ public class JoinRequestService {
 
         Ad ad = adRepository.findById(joinRequestCreationRequest.adId())
                 .orElseThrow(() -> new RuntimeException("Ad not found with id: " + joinRequestCreationRequest.adId()));
-
+        //todo check for duplicate from the user on the ad
+        // todo check if requesting user is not OP
         JoinRequest adRequest = new JoinRequest();
         adRequest.setUser(user);
         adRequest.setAd(ad);
@@ -68,4 +73,30 @@ public class JoinRequestService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Accept a join request to one of the ads posted by the user sending the accept request.
+     * @param id JoinRequest Id
+     * @param userPrincipal logged in user data
+     * @return the request after alteration
+     */
+    public JoinRequestDTO alterJoinRequestStatus(Long id, UserPrincipal userPrincipal, RequestStatus requestStatus) {
+
+        Optional<JoinRequest> maybeJoinRequest = joinRequestRepository.findById(id);
+        if (maybeJoinRequest.isEmpty()) {
+            throw new NotFoundException("Join request not found with id: " + id);
+        }
+
+        var joinRequest = maybeJoinRequest.get();
+        if (!joinRequest.getAd().getUser().getId().equals(userPrincipal.getUserId())) {
+            throw new ForbiddenException("Cannot alter request to other user's ad");
+        }
+        if (joinRequest.getStatus() != RequestStatus.PENDING) {
+            throw new BadRequestException("Cannot alter state of non-pending request");
+        }
+        joinRequest.setStatus(requestStatus);
+        joinRequestRepository.save(joinRequest);
+        return convertToDto(joinRequest);
+    }
+
 }
