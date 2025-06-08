@@ -3,6 +3,9 @@ package paint.projekt.sport_matcher.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import paint.projekt.sport_matcher.exceptions.BadRequestException;
+import paint.projekt.sport_matcher.exceptions.ForbiddenException;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 // In a real application, you would use a password encoder
 // import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
@@ -26,6 +29,14 @@ public class UserService {
                 .role(user.getRole().toString())
                 .isActive(user.getIsActive())
                 .build();
+    }
+
+    private User expectUserExists(Long id) {
+        var maybeUser = userRepository.findById(id);
+        if (maybeUser.isEmpty()) {
+            throw new UserNotFoundException("No user with id " + id);
+        }
+        return maybeUser.get();
     }
 
     public UserDTO registerNewUser(RegisterRequest request) {
@@ -57,5 +68,18 @@ public class UserService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public void deleteUser(Long id, UserPrincipal principal) {
+        var maybeUser = userRepository.findById(id);
+        if (maybeUser.isEmpty()){
+            return;
+        }
+        var user = maybeUser.get();
+        if (!principal.getUserId().equals(user.getId()) && !principal.isAdmin()) {
+            throw new ForbiddenException("You are not permitted to delete this account");
+        }
+
+        userRepository.delete(user);
     }
 }

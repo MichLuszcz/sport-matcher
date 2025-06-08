@@ -2,7 +2,9 @@ package paint.projekt.sport_matcher.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import paint.projekt.sport_matcher.security.UserPrincipal;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class UserController {
     @PostMapping()
     public UserDTO registerNewUser(@RequestBody RegisterRequest request) {
 //        return addLinks(
-          return  userService.registerNewUser(request);
+        return userService.registerNewUser(request);
 //        );
     }
 
@@ -38,4 +40,11 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal, @PathVariable Long id) {
+        userService.deleteUser(id, principal);
+        return ResponseEntity.noContent().build();
+    }
+
 }
