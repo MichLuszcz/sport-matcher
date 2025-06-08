@@ -40,15 +40,21 @@ public class JoinRequestService {
         return maybeJoinRequest.get();
     }
 
-    public JoinRequestDTO createJoinRequest(JoinRequestCreationRequest joinRequestCreationRequest, UserPrincipal userPrincipal) {
+    public JoinRequestDTO createJoinRequest(Long adId, UserPrincipal userPrincipal) {
         Long userId = userPrincipal.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        Ad ad = adRepository.findById(joinRequestCreationRequest.adId())
-                .orElseThrow(() -> new RuntimeException("Ad not found with id: " + joinRequestCreationRequest.adId()));
-        //todo check for duplicate from the user on the ad
-        // todo check if requesting user is not OP
+        Ad ad = adRepository.findById(adId)
+                .orElseThrow(() -> new RuntimeException("Ad not found with id: " + adId));
+
+        var duplicate = joinRequestRepository.findJoinRequestByUser_IdAndAd_Id(userId, adId);
+        if  (duplicate.isPresent()) {
+            throw new BadRequestException("Can only request to join once per ad");
+        }
+        if (ad.getUser().getId().equals(user.getId())) {
+            throw new BadRequestException("Cannot request to join your own ad");
+        }
         JoinRequest adRequest = new JoinRequest();
         adRequest.setUser(user);
         adRequest.setAd(ad);

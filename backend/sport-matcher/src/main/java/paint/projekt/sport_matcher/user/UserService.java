@@ -3,11 +3,8 @@ package paint.projekt.sport_matcher.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import paint.projekt.sport_matcher.exceptions.BadRequestException;
 import paint.projekt.sport_matcher.exceptions.ForbiddenException;
 import paint.projekt.sport_matcher.security.UserPrincipal;
-// In a real application, you would use a password encoder
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +14,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private static final UserRole DEFAULT_ROLE = UserRole.USER;
-    // private final PasswordEncoder passwordEncoder; // Inject password encoder
 
     private UserDTO convertToDto(User user) {
         return UserDTO.builder()

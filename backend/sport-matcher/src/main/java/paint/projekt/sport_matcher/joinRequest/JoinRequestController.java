@@ -11,52 +11,52 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/join-requests")
+@RequestMapping("/api")
 public class JoinRequestController {
 
     private final JoinRequestService joinRequestService;
 
     //maybe change to path variable
-    @PostMapping
-    public ResponseEntity<JoinRequestDTO> createAdRequest(@RequestBody JoinRequestCreationRequest joinRequestCreationRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        JoinRequestDTO createdAdRequest = joinRequestService.createJoinRequest(joinRequestCreationRequest, userPrincipal);
+    @PostMapping("/ads/{adId}/join-requests")
+    public ResponseEntity<JoinRequestDTO> createJoinRequest(@PathVariable Long adId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        JoinRequestDTO createdAdRequest = joinRequestService.createJoinRequest(adId, userPrincipal);
         return new ResponseEntity<>(createdAdRequest, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public @ResponseBody List<JoinRequestDTO> getAllAdRequests() {
+    @GetMapping("/join-requests")
+    public @ResponseBody List<JoinRequestDTO> getAllJoinRequests() {
         return joinRequestService.getAllJoinRequests();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<JoinRequestDTO> getAdRequestById(@PathVariable Long id) {
+    @GetMapping("/join-requests/{id}")
+    public ResponseEntity<JoinRequestDTO> getJoinRequest(@PathVariable Long id) {
         JoinRequestDTO dto = joinRequestService.getJoinRequestById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/users/{userId}")
-    public @ResponseBody List<JoinRequestDTO> getAdRequestsByUserId(@PathVariable Long userId) {
+    @GetMapping("/users/{userId}/join-requests")
+    public @ResponseBody List<JoinRequestDTO> getUserJoinRequests(@PathVariable Long userId) {
         return joinRequestService.getJoinRequestsByUserId(userId);
     }
 
-    @GetMapping("/ads/{adId}")
-    public @ResponseBody List<JoinRequestDTO> getAdRequestsByAdId(@PathVariable Long adId) {
+    @GetMapping("/ads/{adId}/join-requests")
+    public @ResponseBody List<JoinRequestDTO> getAdJoinRequests(@PathVariable Long adId) {
         return joinRequestService.getJoinRequestsByAdId(adId);
     }
 
-    @PutMapping("/{id}/accept")
+    @PutMapping("/join-requests/{id}/accept")
     public ResponseEntity<JoinRequestDTO> acceptJoinRequest(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         var accepted_request = joinRequestService.alterJoinRequestStatus(id, userPrincipal, RequestStatus.ACCEPTED);
         return ResponseEntity.ok(accepted_request);
     }
 
-    @PutMapping("/{id}/reject")
+    @PutMapping("/join-requests/{id}/reject")
     public ResponseEntity<JoinRequestDTO> rejectJoinRequest(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         var rejected_request = joinRequestService.alterJoinRequestStatus(id, userPrincipal, RequestStatus.REJECTED);
         return ResponseEntity.ok(rejected_request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/join-requests/{id}")
     public ResponseEntity<JoinRequestDTO> deleteJoinRequest(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         joinRequestService.deleteJoinRequest(id, userPrincipal);
         return ResponseEntity.ok().build();

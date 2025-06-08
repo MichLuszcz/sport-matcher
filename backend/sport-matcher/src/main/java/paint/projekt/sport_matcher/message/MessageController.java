@@ -11,40 +11,35 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/messages")
+@RequestMapping(path = "/api")
 public class MessageController {
 
     private final MessageService messageService;
 
-    @PostMapping
+    @PostMapping("/messages")
     public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageCreationRequest messageCreationRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         MessageDTO createdMessage = messageService.createMessage(messageCreationRequest, userPrincipal);
         return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public @ResponseBody List<MessageDTO> getAllMessages() {
-        return messageService.getAllMessages();
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("/messages/{id}")
     public ResponseEntity<MessageDTO> getMessageById(@PathVariable Long id) {
         MessageDTO dto = messageService.getMessageById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/sender/{senderId}")
-    public @ResponseBody List<MessageDTO> getMessagesBySenderId(@PathVariable Long senderId) {
-        return messageService.getMessagesBySenderId(senderId);
+    @GetMapping("/users/{userId}/messages/sent")
+    public @ResponseBody List<MessageDTO> getMessagesBySenderId(@PathVariable Long userId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return messageService.getMessagesBySenderId(userId, userPrincipal);
     }
 
-    @GetMapping("/receiver/{receiverId}")
-    public @ResponseBody List<MessageDTO> getMessagesByReceiverId(@PathVariable Long receiverId) {
-        return messageService.getMessagesByReceiverId(receiverId);
+    @GetMapping("/users/{userId}/messages/received")
+    public @ResponseBody List<MessageDTO> getMessagesByReceiverId(@PathVariable Long userId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return messageService.getMessagesByReceiverId(userId, userPrincipal);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MessageDTO> deleteMessage(@PathVariable Long id,  @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    @DeleteMapping("/messages/{id}")
+    public ResponseEntity<MessageDTO> deleteMessage(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         messageService.deleteMessage(id, userPrincipal);
         return ResponseEntity.ok().build();
     }

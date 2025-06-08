@@ -2,7 +2,6 @@ package paint.projekt.sport_matcher.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import paint.projekt.sport_matcher.ad.Ad;
 import paint.projekt.sport_matcher.exceptions.ForbiddenException;
 import paint.projekt.sport_matcher.security.UserPrincipal;
 import paint.projekt.sport_matcher.user.User;
@@ -45,25 +44,26 @@ public class MessageService {
         return convertToDto(savedMessage);
     }
 
-    public List<MessageDTO> getAllMessages() {
-        return messageRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
     public MessageDTO getMessageById(Long id) {
         return messageRepository.findById(id)
                 .map(this::convertToDto)
                 .orElse(null);
     }
 
-    public List<MessageDTO> getMessagesBySenderId(Long senderId) {
+    public List<MessageDTO> getMessagesBySenderId(Long senderId, UserPrincipal userPrincipal) {
+
+        if (!userPrincipal.getUserId().equals(senderId)) {
+            throw new ForbiddenException("Cannot get other user's messages");
+        }
         return messageRepository.findAllBySenderId(senderId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public List<MessageDTO> getMessagesByReceiverId(Long receiverId) {
+    public List<MessageDTO> getMessagesByReceiverId(Long receiverId, UserPrincipal userPrincipal) {
+        if (!userPrincipal.getUserId().equals(receiverId)) {
+            throw new ForbiddenException("Cannot get other user's messages");
+        }
         return messageRepository.findAllByReceiverId(receiverId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
