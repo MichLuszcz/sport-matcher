@@ -30,6 +30,20 @@ export default function AdList() {
   const [time, setTime] = useState("");
   const [search, setSearch] = useState("");
 
+   useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/ads`, {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch ads");
+        return res.json();
+      })
+      .then((data) => setAds(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   const formatDate = (iso: string) => {
     const date = new Date(iso);
     return date.toLocaleDateString(undefined, {
