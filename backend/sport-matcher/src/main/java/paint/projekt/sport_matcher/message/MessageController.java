@@ -23,8 +23,8 @@ public class MessageController {
     }
 
     @GetMapping("/messages/{id}")
-    public ResponseEntity<MessageDTO> getMessageById(@PathVariable Long id) {
-        MessageDTO dto = messageService.getMessageById(id);
+    public ResponseEntity<MessageDTO> getMessage(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        MessageDTO dto = messageService.getMessageById(id, userPrincipal);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
