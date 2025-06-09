@@ -100,7 +100,7 @@ export default function AdList() {
 
   useEffect(() => {
     fetchData()
-  })
+  }, [])
 
   return (
     <div className="adlist-container">
