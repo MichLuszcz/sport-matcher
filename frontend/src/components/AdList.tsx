@@ -74,7 +74,7 @@ export default function AdList() {
 
   async function fetchData() {
     try {
-      const response = fetch(`${import.meta.env.VITE_API_URL}/ads`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/ads`, {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       }
