@@ -72,7 +72,7 @@ export default function AdList() {
     setSearch("");
   };
 
-  async function fetchData() {
+   async function fetchData() {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/ads`, {
       headers: {
@@ -80,19 +80,21 @@ export default function AdList() {
       }
       })
       type AdResponse = Ad[] | { ads: Ad[] };
-      const result: AdResponse = await response.json();
+      const result: AdResponse = await response.json()
+      console.log('Ads fetched:', result)
+
       if (Array.isArray(result)) {
         setAds(result)
       } else if (Array.isArray(result.ads)) {
-        setAds(result.ads);
+        setAds(result.ads)
       } else {
-        console.error("Unexpected response format:", result);
+        console.error('Unexpected response format:', result)
       }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("An error occured while fetching ads:\n" + error)
-        }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('An error occured while fetching ads:\n' + error)
       }
+    }
   }
 
   useEffect(() => {
