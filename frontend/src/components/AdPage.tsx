@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useParams, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import "./AdPage.css";
 
 interface Ad {
@@ -9,25 +9,40 @@ interface Ad {
   location: string;
   eventDateTime: string;
   maxParticipants: number;
-  sportType: {
-    id: number;
-    name: string;
-  };
-  user: {
-    id: number;
-    username: string;
-  };
+  sportTypeId: number,
+  sportTypeName: string;
+  userId: number,
+  username: string;
 };
 
 
 export default function AdPage() {
-  const { id } = useParams();
+  const {id} = useParams();
   const navigate = useNavigate();
-  const [ad, /*setAd*/] = useState<Ad | null>(null);
+  const [ad, setAd] = useState<Ad | null>(null);
+
+  async function fetchData() {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/ads/${id}`, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      })
+      // type AdResponse = Ad[] | { ads: Ad[] };
+      const result: Ad = await response.json();
+      console.log(result)
+      setAd(result);
+      console.log(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("An error occured while fetching ad:\n" + error)
+      }
+    }
+  }
 
   useEffect(() => {
-    // backend
-  }, [id]);
+    fetchData()
+  }, [])
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString(undefined, {
@@ -59,7 +74,7 @@ export default function AdPage() {
         <h2 className="adpage-title">{ad.title}</h2>
 
         <div className="adpage-meta">
-          <span className="ad-sport">{ad.sportType.name}</span>
+          <span className="ad-sport">{ad.sportTypeName}</span>
           <span className="ad-separator">|</span>
           <span className="ad-participants">
             <img
@@ -83,7 +98,7 @@ export default function AdPage() {
         </div>
 
         <div className="adpage-footer">
-          <p>Author: {ad.user.username}</p>
+          <p>Author: {ad.username}</p>
         </div>
 
         <button className="adpage-join-button" onClick={handleJoin}>Join this event</button>

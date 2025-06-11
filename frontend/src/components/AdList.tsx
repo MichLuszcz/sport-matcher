@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./AdList.css";
 
 type Ad = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   location: string;
@@ -84,8 +84,10 @@ type AdResponse = {
       })
       // type AdResponse = Ad[] | { ads: Ad[] };
       const result: AdResponse = await response.json();
-
+      console.log(result);
+      console.log("-----");
       const ads = result._embedded?.ads ?? [];
+      console.log(ads)
       setAds(ads);
       // console.log(ads);
       return ads;
@@ -166,7 +168,9 @@ type AdResponse = {
           <li
             key={ad.id}
             className="ad-card"
-            onClick={() => navigate(`/ads/${ad.id}`)}
+            onClick={() => {
+              console.log(ad);
+              navigate(`/ads/${ad.id}`)}}
             style={{ cursor: "pointer" }}
           >
             <h3 className="ad-title">{ad.title}</h3>
