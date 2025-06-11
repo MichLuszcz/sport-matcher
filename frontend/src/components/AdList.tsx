@@ -9,15 +9,11 @@ type Ad = {
   location: string;
   eventDateTime: string;
   maxParticipants: number;
-  sportType: {
-    id: number;
-    name: string;
+  sportTypeId: number,
+  sportTypeName: string;
+  userId: number,
+  username: string;
   };
-  user: {
-    id: number;
-    username: string;
-  };
-};
 
 export default function AdList() {
   const navigate = useNavigate();
@@ -51,7 +47,7 @@ export default function AdList() {
   const filteredAds = ads.filter((ad) => {
     const matchesSearch =
       ad.description.toLowerCase().includes(search.toLowerCase()) ||
-      ad.sportType.name.toLowerCase().includes(search.toLowerCase());
+      ad.sportTypeName.toLowerCase().includes(search.toLowerCase());
 
     const adDate = new Date(ad.eventDateTime);
     const adDay = adDate.toLocaleDateString(undefined, { weekday: "long" });
@@ -59,7 +55,7 @@ export default function AdList() {
 
     return (
       matchesSearch &&
-      (sport === "" || ad.sportType.name === sport) &&
+      (sport === "" || ad.sportTypeName === sport) &&
       (day === "" || adDay === day) &&
       (time === "" || adTime === time)
     );
@@ -72,6 +68,13 @@ export default function AdList() {
     setSearch("");
   };
 
+type AdResponse = {
+  _embedded: {
+    ads: Ad[];
+  };
+};
+
+
   async function fetchData() {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/ads`, {
@@ -79,15 +82,20 @@ export default function AdList() {
         "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       }
       })
-      type AdResponse = Ad[] | { ads: Ad[] };
+      // type AdResponse = Ad[] | { ads: Ad[] };
       const result: AdResponse = await response.json();
-      if (Array.isArray(result)) {
-        setAds(result)
-      } else if (Array.isArray(result.ads)) {
-        setAds(result.ads);
-      } else {
-        console.error("Unexpected response format:", result);
-      }
+
+      const ads = result._embedded?.ads ?? [];
+      setAds(ads);
+      // console.log(ads);
+      return ads;
+      // if (Array.isArray(result)) {
+      //   setAds(result)
+      // } else if (Array.isArray(result.ads)) {
+      //   setAds(result.ads);
+      // } else {
+      //   console.error("Unexpected response format:", result);
+      // }
       } catch (error) {
         if (error instanceof Error) {
           console.error("An error occured while fetching ads:\n" + error)
@@ -163,7 +171,7 @@ export default function AdList() {
           >
             <h3 className="ad-title">{ad.title}</h3>
             <div className="ad-meta">
-              <span className="ad-sport">{ad.sportType.name}</span>
+              <span className="ad-sport">{ad.sportTypeName}</span>
               <span className="ad-separator">|</span>
               <span className="ad-participants">
                 <img
@@ -183,7 +191,7 @@ export default function AdList() {
             </div>
 
             <div className="ad-footer">
-              <p>Author: {ad.user.username}</p>
+              <p>Author: {ad.username}</p>
             </div>
           </li>
         ))}
