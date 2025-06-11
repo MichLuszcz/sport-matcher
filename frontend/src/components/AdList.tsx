@@ -78,14 +78,21 @@ export default function AdList() {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       }
-    })
-      const result: Ad[] = await response.json();
-      setAds(result)
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("An error occured while fetching ads:\n" + error);
+      })
+      type AdResponse = Ad[] | { ads: Ad[] };
+      const result: AdResponse = await response.json();
+      if (Array.isArray(result)) {
+        setAds(result)
+      } else if (Array.isArray(result.ads)) {
+        setAds(result.ads);
+      } else {
+        console.error("Unexpected response format:", result);
       }
-    }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("An error occured while fetching ads:\n" + error)
+        }
+      }
   }
 
   useEffect(() => {
@@ -127,8 +134,12 @@ export default function AdList() {
           <select value={day} onChange={(e) => setDay(e.target.value)}>
             <option value="">Any day</option>
             <option value="Monday">Monday</option>
+            <option value="Monday">Monday</option>
             <option value="Wednesday">Wednesday</option>
+            <option value="Monday">Monday</option>
             <option value="Friday">Friday</option>
+            <option value="Monday">Monday</option>
+            <option value="Monday">Monday</option>
           </select>
 
           <input
